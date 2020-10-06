@@ -14,12 +14,14 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
 
   @override
   void initState() {
+    super.initState();
+    
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(
           name: 'Página 1',
           baseStyle:
               TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 28.0),
-          colorLineSelected: Colors.teal,
+          colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
         ),
         HomePage()));
 
@@ -28,34 +30,39 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
           name: 'Página 2',
           baseStyle:
               TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 28.0),
-          colorLineSelected: Colors.orange,
+          colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
         ),
         SecondPage()));
-
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return HiddenDrawerMenu(
-      backgroundColorMenu: Colors.blueGrey,
-      // backgroundColorAppBar: Colors.green,
-      screens: items,
-      //    typeOpen: TypeOpen.FROM_RIGHT,
-      //    enableScaleAnimin: true,
-      //    enableCornerAnimin: true,
-      slidePercent: 50.0,
-      verticalScalePercent: 90.0,
-      contentCornerRadius: 30.0,
-      //    iconMenuAppBar: Icon(Icons.menu),
-      //    backgroundContent: DecorationImage((image: ExactAssetImage('assets/bg_news.jpg'),fit: BoxFit.cover),
-      //    whithAutoTittleName: true,
-      //    styleAutoTittleName: TextStyle(color: Colors.red),
-      //    actionsAppBar: <Widget>[],
-      //    backgroundColorContent: Colors.blue,
-      //    elevationAppBar: 4.0,
-      //    tittleAppBar: Center(child: Icon(Icons.ac_unit),),
-      //    enableShadowItensMenu: true,
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: HiddenDrawerMenu(
+          backgroundColorMenu: Theme.of(context).secondaryHeaderColor,
+          backgroundColorAppBar: Theme.of(context).scaffoldBackgroundColor,
+          screens: items,
+          //    typeOpen: TypeOpen.FROM_RIGHT,
+          //    enableScaleAnimin: true,
+          //    enableCornerAnimin: true,
+          slidePercent: 50.0,
+          verticalScalePercent: 90.0,
+          contentCornerRadius: 30.0,
+          elevationAppBar: 0.0,
+          leadingAppBar:
+              Icon(Icons.menu, color: Theme.of(context).secondaryHeaderColor),
+          // iconMenuAppBar: Icon(Icons.menu),
+          //    backgroundContent: DecorationImage((image: ExactAssetImage('assets/bg_news.jpg'),fit: BoxFit.cover),
+          //    whithAutoTittleName: true,
+          //    styleAutoTittleName: TextStyle(color: Colors.red),
+          //    actionsAppBar: <Widget>[],
+          //    backgroundColorContent: Colors.blue,
+          //    tittleAppBar: Center(child: Icon(Icons.ac_unit),),
+          //    enableShadowItensMenu: true,
+        ),
+      ),
     );
   }
 }

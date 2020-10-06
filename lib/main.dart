@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'widgets/hiddenDrawerMenu.dart';
 
@@ -9,10 +10,25 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.black87, // Color for Android
+        statusBarBrightness:
+            Brightness.light // Dark == white status bar -- for IOS.
+        ));
+
+    // final _screenSizeWidth = MediaQuery.of(context).size.width;
+    // final _fontScaling = MediaQuery.of(context).textScaleFactor;
+
+    /**
+     * 
+     */
     return MaterialApp(
       title: 'DonApp',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color.fromRGBO(38, 110, 246, 1),
+        secondaryHeaderColor: Colors.black87,
+        accentColor: Color.fromRGBO(153, 148, 250, 1),
       ),
       home: HiddenDrowerMenu(),
     );
