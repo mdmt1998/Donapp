@@ -15,10 +15,10 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
   @override
   void initState() {
     super.initState();
-    
+
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(
-          name: 'Página 1',
+          // name: 'Página 1',
           baseStyle:
               TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 28.0),
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
@@ -27,7 +27,7 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
 
     items.add(new ScreenHiddenDrawer(
         new ItemHiddenMenu(
-          name: 'Página 2',
+          // name: 'Página 2',
           baseStyle:
               TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 28.0),
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
@@ -40,6 +40,7 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
     return Container(
       color: Colors.white,
       child: SafeArea(
+        bottom: false,
         child: HiddenDrawerMenu(
           backgroundColorMenu: Theme.of(context).secondaryHeaderColor,
           backgroundColorAppBar: Theme.of(context).scaffoldBackgroundColor,
@@ -60,7 +61,7 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
           //    actionsAppBar: <Widget>[],
           //    backgroundColorContent: Colors.blue,
           //    tittleAppBar: Center(child: Icon(Icons.ac_unit),),
-          //    enableShadowItensMenu: true,
+          // enableShadowItensMenu: true,
         ),
       ),
     );
