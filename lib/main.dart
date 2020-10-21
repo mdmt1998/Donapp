@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'widgets/hiddenDrawerMenu.dart';
+import 'pages/auth/loginPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.black87, // Color for Android
+        statusBarColor: Colors.white, // Color for Android
         statusBarBrightness:
             Brightness.light // Dark == white status bar -- for IOS.
         ));
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         secondaryHeaderColor: Colors.black87,
         accentColor: Color.fromRGBO(153, 148, 250, 1),
       ),
-      home: HiddenDrowerMenu(),
+      home: LoginPage(),
     );
   }
 }
