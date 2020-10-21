@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../pages/articleDetailPage.dart';
+
 class ArticlesGridViewWidget extends StatefulWidget {
   final String articleImage;
   final String articleName;
@@ -27,6 +29,8 @@ class _ArticlesGridViewWidgetState extends State<ArticlesGridViewWidget> {
       body: GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        mainAxisSpacing: _screenSizeWidth / 15,
         children: List.generate(7, (index) {
           return Center(
               child: Container(
@@ -34,7 +38,7 @@ class _ArticlesGridViewWidgetState extends State<ArticlesGridViewWidget> {
             width: _screenSizeWidth / 2.6,
             child: GestureDetector(
               child: Card(
-                  elevation: 2,
+                  elevation: 3,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                           Radius.circular(_screenSizeWidth / 13))),
@@ -57,7 +61,10 @@ class _ArticlesGridViewWidgetState extends State<ArticlesGridViewWidget> {
                             textAlign: TextAlign.center),
                       ])),
               onTap: () {
-                print('article');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ArticleDetailPage()),
+                );
               },
             ),
           ));

@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
           child: ArticlesGridViewWidget(
               articleImage:
                   'https://billmes.com/706-large_default/silla-de-ruedas-standard.jpg',
-              articleName: 'Nombre')),
+              articleName: 'Nashville armchair')),
     );
   }
 }

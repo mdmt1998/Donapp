@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 
 import '../pages/home/homePage.dart';
-import '../pages/home/secondPage.dart';
+import '../pages/profilePage.dart';
 
 class HiddenDrowerMenu extends StatefulWidget {
   @override
@@ -10,29 +10,29 @@ class HiddenDrowerMenu extends StatefulWidget {
 }
 
 class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
-  List<ScreenHiddenDrawer> items = new List();
+  List<ScreenHiddenDrawer> items = List();
 
   @override
   void initState() {
     super.initState();
 
-    items.add(new ScreenHiddenDrawer(
-        new ItemHiddenMenu(
-          // name: 'Página 1',
+    items.add(ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: 'Artículos disponibles',
           baseStyle:
-              TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 28.0),
+              TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 18.0),
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
         ),
         HomePage()));
 
-    items.add(new ScreenHiddenDrawer(
-        new ItemHiddenMenu(
-          // name: 'Página 2',
+    items.add(ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: 'Mi perfil',
           baseStyle:
-              TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 28.0),
+              TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 18.0),
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
         ),
-        SecondPage()));
+        ProfilePage()));
   }
 
   @override
