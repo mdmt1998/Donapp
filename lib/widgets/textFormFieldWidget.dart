@@ -14,7 +14,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final double fontSizeLabel;
   final double fontSizeHint;
   final bool obscureText;
-  final bool autoValidate;
+  final AutovalidateMode autoValidateMode;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final TextCapitalization textCapitalization;
@@ -44,7 +44,7 @@ class TextFormFieldWidget extends StatefulWidget {
       this.fontSizeHint,
       this.validator,
       this.initialValue,
-      this.autoValidate,
+      this.autoValidateMode,
       this.onChanged,
       this.onSaved,
       this.helperText,
@@ -79,7 +79,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       obscureText: widget.obscureText ?? false,
       readOnly: widget.readOnly ?? false,
       validator: widget.validator,
-      // autovalidate: widget.autoValidate ?? false,
+      autovalidateMode: widget.autoValidateMode,
       initialValue: widget.initialValue,
       onChanged: widget.onChanged,
       onSaved: widget.onSaved,

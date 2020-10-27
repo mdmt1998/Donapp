@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/buttonWidget.dart';
+import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/textFormFieldWidget.dart';
 import 'registerPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,10 +11,89 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _emailController;
+  TextEditingController _passwordController;
+
+  bool autoValidate = false;
+
+  // _validateInputs() {
+  //   final form = _formKey.currentState;
+  //   if (form.validate()) {
+  //     form.save();
+  //   } else {
+  //     setState(() {
+  //       autoValidate = true;
+  //     });
+  //   }
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
+
+    Widget _titleText() => Container(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Bienvenido',
+            style: TextStyle(fontSize: _fontScaling / 0.038),
+          ),
+        );
+
+    Widget _loginFields() => Form(
+          key: _formKey,
+          child: Column(children: [
+            TextFormFieldWidget(
+              hintText: 'correo@correo.com',
+              controller: _emailController,
+              autoValidateMode: AutovalidateMode.always,
+              textInputType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+                hintText: 'Contraseña',
+                controller: _passwordController,
+                textInputType: TextInputType.text),
+          ]),
+        );
+
+    Widget _createAccount() => Container(
+          alignment: Alignment.centerRight,
+          child: FlatButton(
+            child: Text('Crear cuenta'),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()));
+            },
+          ),
+        );
+
+    Widget _loginButton() => ButtonWidget(
+          buttonText: 'Iniciar sesión',
+          height: _screenSizeWidth / 11,
+          width: _screenSizeWidth / 2.5,
+          elevation: 2,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+          },
+        );
 
     /**
      * 
@@ -28,55 +109,28 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                height: _screenSizeWidth / 1.1,
+                height: _screenSizeWidth / 1.13,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(_screenSizeWidth / 10),
                         topLeft: Radius.circular(_screenSizeWidth / 10))),
                 child: Padding(
-                  padding: const EdgeInsets.all(32.0),
+                  padding: EdgeInsets.only(
+                      left: _screenSizeWidth / 15,
+                      top: _screenSizeWidth / 15,
+                      right: _screenSizeWidth / 15),
                   child: Stack(
                     children: [
                       Column(
                         children: [
-                          Row(children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Theme.of(context).primaryColor,
-                                  size: _screenSizeWidth / 12,
-                                ),
-                                onPressed: () {
-                                  print('hola');
-                                })
-                          ]),
+                          _titleText(),
                           SizedBox(height: _screenSizeWidth / 15),
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Bienvenido',
-                                style:
-                                    TextStyle(fontSize: _fontScaling / 0.038),
-                              )),
-                          SizedBox(height: _screenSizeWidth / 3.7),
-                          ButtonWidget(
-                            buttonText: 'Iniciar sesión',
-                            height: _screenSizeWidth / 11,
-                            width: _screenSizeWidth / 2.5,
-                            elevation: 2,
-                            onPressed: null,
-                          ),
-                          SizedBox(height: _screenSizeWidth / 100),
-                          FlatButton(
-                            child: Text('Crear cuenta'),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RegisterPage()));
-                            },
-                          )
+                          _loginFields(),
+                          _createAccount(),
+                          SizedBox(height: _screenSizeWidth / 50),
+                          _loginButton(),
+                          SizedBox(height: _screenSizeWidth / 900),
                         ],
                       )
                     ],

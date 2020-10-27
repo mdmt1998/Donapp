@@ -10,22 +10,35 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _emailController;
+  TextEditingController _passwordController;
+  TextEditingController _addressController;
+  TextEditingController _phoneController;
+  TextEditingController _nameController;
+  TextEditingController _cityController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _addressController = TextEditingController();
+    _phoneController = TextEditingController();
+    _nameController = TextEditingController();
+    _cityController = TextEditingController();
+  }
 
   @override
   void dispose() {
-    super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
     _nameController.dispose();
     _cityController.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,6 +46,69 @@ class _RegisterPageState extends State<RegisterPage> {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
+    Widget _titleText() => Container(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Crear cuenta',
+            style: TextStyle(fontSize: _fontScaling / 0.038),
+          ),
+        );
+
+    Widget _registerFields() => Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormFieldWidget(
+                hintText: 'Nombre completo',
+                controller: _nameController,
+                textInputType: TextInputType.text,
+              ),
+              SizedBox(height: _screenSizeWidth / 20),
+              TextFormFieldWidget(
+                hintText: 'correo@correo.com',
+                controller: _emailController,
+                textInputType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: _screenSizeWidth / 20),
+              TextFormFieldWidget(
+                  hintText: 'Contraseña',
+                  controller: _passwordController,
+                  textInputType: TextInputType.text),
+              SizedBox(height: _screenSizeWidth / 20),
+              TextFormFieldWidget(
+                hintText: 'Ciudad',
+                controller: _cityController,
+                textInputType: TextInputType.text,
+              ),
+              SizedBox(height: _screenSizeWidth / 20),
+              TextFormFieldWidget(
+                hintText: 'Dirección',
+                controller: _addressController,
+                textInputType: TextInputType.text,
+              ),
+              SizedBox(height: _screenSizeWidth / 20),
+              TextFormFieldWidget(
+                  hintText: 'Número telefónico',
+                  controller: _phoneController,
+                  textInputType: TextInputType.phone)
+            ],
+          ),
+        );
+
+    Widget _registerButton() => ButtonWidget(
+          buttonText: 'Crear cuenta',
+          elevation: 3,
+          height: _screenSizeWidth / 11,
+          width: _screenSizeWidth / 2.5,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+          },
+        );
+
+    /**
+     * 
+     */
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -59,59 +135,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             Navigator.pop(context);
                           }))
                 ]),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Crear cuenta',
-                      style: TextStyle(fontSize: _fontScaling / 0.038),
-                    )),
+                _titleText(),
                 SizedBox(height: _screenSizeWidth / 20),
-                TextFormFieldWidget(
-                  hintText: 'Nombre completo',
-                  controller: _nameController,
-                  textInputType: TextInputType.text,
-                ),
-                SizedBox(height: _screenSizeWidth / 20),
-                TextFormFieldWidget(
-                  hintText: 'correo@correo.com',
-                  controller: _emailController,
-                  textInputType: TextInputType.emailAddress,
-                ),
-                SizedBox(height: _screenSizeWidth / 20),
-                TextFormFieldWidget(
-                    hintText: 'Contraseña',
-                    controller: _passwordController,
-                    textInputType: TextInputType.text),
-                SizedBox(height: _screenSizeWidth / 20),
-                TextFormFieldWidget(
-                  hintText: 'Ciudad',
-                  controller: _cityController,
-                  textInputType: TextInputType.text,
-                ),
-                SizedBox(height: _screenSizeWidth / 20),
-                TextFormFieldWidget(
-                  hintText: 'Dirección',
-                  controller: _addressController,
-                  textInputType: TextInputType.text,
-                ),
-                SizedBox(height: _screenSizeWidth / 20),
-                TextFormFieldWidget(
-                  hintText: 'Número telefónico',
-                  controller: _phoneController,
-                  textInputType: TextInputType.phone,
-                ),
+                _registerFields(),
                 SizedBox(height: _screenSizeWidth / 10),
-                ButtonWidget(
-                  buttonText: 'Crear cuenta',
-                  elevation: 3,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HiddenDrowerMenu(),
-                        ));
-                  },
-                ),
+                _registerButton(),
                 SizedBox(height: _screenSizeWidth / 5),
               ],
             )),
