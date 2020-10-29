@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
       title: 'DonApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(38, 110, 246, 1),
-        secondaryHeaderColor: Colors.black87,
-        accentColor: Color.fromRGBO(153, 148, 250, 1),
+        primaryColor: Color.fromRGBO(0, 93, 255, 1), // azul
+        secondaryHeaderColor: Color.fromRGBO(5, 4, 28, 1),
+        accentColor: Color.fromRGBO(139, 180, 254, 1), // violeta
       ),
       home: LoginPage(),
     );
