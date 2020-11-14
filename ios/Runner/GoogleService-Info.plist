@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>579815034327-1kup8uka3962ecr85esi6kft72c875ht.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.579815034327-1kup8uka3962ecr85esi6kft72c875ht</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDUsCxp2p24TVcl8fHBP4utHKjEVP4xPkA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>579815034327</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.donapp</string>
+	<key>PROJECT_ID</key>
+	<string>donapp-17b84</string>
+	<key>STORAGE_BUCKET</key>
+	<string>donapp-17b84.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:579815034327:ios:414628f51074fbac3fcf92</string>
+	<key>DATABASE_URL</key>
+	<string>https://donapp-17b84.firebaseio.com</string>
+</dict>
+</plist>
