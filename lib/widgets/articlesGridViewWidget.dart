@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages/articleDetailPage.dart';
+import '../pages/articleDetail/articleDetailPage.dart';
 
 class ArticlesGridViewWidget extends StatefulWidget {
   final String articleImage;

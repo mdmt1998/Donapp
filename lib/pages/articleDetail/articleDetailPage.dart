@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../widgets/buttonWidget.dart';
+import '../../widgets/buttonWidget.dart';
+import 'acquireArticlePage.dart';
+import 'donorContactPage.dart';
 
 class ArticleDetailPage extends StatefulWidget {
   @override
@@ -123,7 +125,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         );
 
     Widget _contactButton() => ButtonWidget(
-          buttonText: 'Contacto',
+          buttonText: 'Adquirir',
           elevation: 5,
           onPressed: () {},
         );
@@ -136,37 +138,65 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       child: SafeArea(
           bottom: false,
           child: Scaffold(
+              appBar: AppBar(
+                  elevation: 0.0,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  leading: IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  actions: [
+                    PopupMenuButton<String>(
+                        icon: Icon(Icons.more_vert, color: Colors.black),
+                        onSelected: (choice) {
+                          if (choice == PopupMenuButtonItem.Contact) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DonorContactpage()));
+                          } else if (choice == PopupMenuButtonItem.ACQUIRE) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AcquireAriclePage()));
+                          }
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            PopupMenuButtonItem.choices
+                                .map((String choice) => PopupMenuItem<String>(
+                                      value: choice,
+                                      child: Text(choice),
+                                    ))
+                                .toList())
+                  ]),
               body: SingleChildScrollView(
-            child: Column(children: [
-              Row(children: [
-                Padding(
-                    padding: EdgeInsets.only(
-                        left: _screenSizeWidth / 60,
-                        top: _screenSizeWidth / 50),
-                    child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }))
-              ]),
-              Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: _screenSizeWidth / 20),
-                child: Container(
-                    child: Column(children: [
-                  SizedBox(height: _screenSizeWidth / 20),
-                  _principalPictureContainer(),
-                  SizedBox(height: _screenSizeWidth / 13),
-                  _picturesCarousel(),
-                  SizedBox(height: _screenSizeWidth / 9),
-                  _descriptionContainer(),
-                  SizedBox(height: _screenSizeWidth / 9),
-                  _contactButton(),
-                  SizedBox(height: _screenSizeWidth / 9),
-                ])),
-              )
-            ]),
-          ))),
+                child: Column(children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: _screenSizeWidth / 20),
+                    child: Container(
+                        child: Column(children: [
+                      SizedBox(height: _screenSizeWidth / 20),
+                      _principalPictureContainer(),
+                      SizedBox(height: _screenSizeWidth / 13),
+                      _picturesCarousel(),
+                      SizedBox(height: _screenSizeWidth / 9),
+                      _descriptionContainer(),
+                      SizedBox(height: _screenSizeWidth / 9),
+                      _contactButton(),
+                      SizedBox(height: _screenSizeWidth / 9),
+                    ])),
+                  )
+                ]),
+              ))),
     );
   }
+}
+
+class PopupMenuButtonItem {
+  static const String ACQUIRE = 'Adquirir';
+  static const String Contact = 'Contactar';
+
+  static const List<String> choices = <String>[ACQUIRE, Contact];
 }
