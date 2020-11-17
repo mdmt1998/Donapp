@@ -15,6 +15,12 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
 
   List<String> images;
 
+  String principalImage =
+      'https://billmes.com/706-large_default/silla-de-ruedas-standard.jpg';
+  String articleName = 'Nashville armchair';
+  String articleDescription =
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make ';
+
   _cardPictureSlider(int index) => AnimatedBuilder(
         animation: _pageController,
         builder: (BuildContext context, Widget widget) {
@@ -81,8 +87,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                     height: _screenSizeWidth / 2,
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
-                      image:
-                          'https://billmes.com/706-large_default/silla-de-ruedas-standard.jpg',
+                      image: '$principalImage',
                       fit: BoxFit.scaleDown,
                       placeholderCacheWidth: 100,
                       alignment: Alignment.topCenter,
@@ -114,20 +119,26 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Nashville armchair',
+                    Text('$articleName',
                         style: TextStyle(
                             fontSize: _fontScaling / 0.05,
                             color: Theme.of(context).primaryColor)),
-                    Text(
-                        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make ',
-                        textAlign: TextAlign.center)
+                    Text('$articleDescription', textAlign: TextAlign.center)
                   ])),
         );
 
-    Widget _contactButton() => ButtonWidget(
+    Widget _acquireButton() => ButtonWidget(
           buttonText: 'Adquirir',
-          elevation: 5,
-          onPressed: () {},
+          elevation: 5.0,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AcquireArticlePage(
+                        articleName: articleName,
+                        articleDescription: articleDescription,
+                        principalImage: principalImage)));
+          },
         );
 
     /**
@@ -154,12 +165,17 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DonorContactpage()));
+                                    builder: (context) => DonorContactPage()));
                           } else if (choice == PopupMenuButtonItem.ACQUIRE) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AcquireAriclePage()));
+                                    builder: (context) => AcquireArticlePage(
+                                          articleName: articleName,
+                                          articleDescription:
+                                              articleDescription,
+                                          principalImage: principalImage,
+                                        )));
                           }
                         },
                         itemBuilder: (BuildContext context) =>
@@ -184,7 +200,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                       SizedBox(height: _screenSizeWidth / 9),
                       _descriptionContainer(),
                       SizedBox(height: _screenSizeWidth / 9),
-                      _contactButton(),
+                      _acquireButton(),
                       SizedBox(height: _screenSizeWidth / 9),
                     ])),
                   )

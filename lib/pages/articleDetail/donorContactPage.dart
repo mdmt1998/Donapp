@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class DonorContactpage extends StatefulWidget {
+class DonorContactPage extends StatefulWidget {
   @override
-  _DonorContactpageState createState() => _DonorContactpageState();
+  _DonorContactPageState createState() => _DonorContactPageState();
 }
 
-class _DonorContactpageState extends State<DonorContactpage> {
+class _DonorContactPageState extends State<DonorContactPage> {
   @override
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
@@ -74,7 +74,7 @@ class _DonorContactpageState extends State<DonorContactpage> {
                 _titleText(),
                 SizedBox(height: _screenSizeWidth / 5),
                 SvgPicture.asset('assets/contact.svg',
-                    fit: BoxFit.cover, height: _screenSizeWidth / 2.2),
+                    fit: BoxFit.cover, height: _screenSizeWidth / 2),
                 _conatactData(),
                 SizedBox(height: _screenSizeWidth / 15),
               ],
