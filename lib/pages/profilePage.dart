@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'myArticlesPage.dart';
 import 'auth/loginPage.dart';
 import 'publishedArticles.dart';
 
@@ -63,7 +64,8 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
           onTap: () {
-            print('hola');
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyArticlesPage()));
           },
         );
 

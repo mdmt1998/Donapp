@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../widgets/buttonWidget.dart';
@@ -17,7 +15,7 @@ class _AddArticlePageState extends State<AddArticlePage> {
   TextEditingController _descriptionController;
 
   // Future<PickedFile> _imagePickedFile;
-  File _selectedPicture;
+  // File _selectedPicture;
 
   // Future _selectImageFromGallery(ImageSource imageSource) async {
   //   final ImagePicker picker = ImagePicker();
