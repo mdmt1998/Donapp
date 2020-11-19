@@ -48,6 +48,7 @@ flutter:
   assets:
     - assets/contact.svg
     - assets/newProduct.svg
+    - assets/user.svg
   
   
 
