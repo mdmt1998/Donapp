@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'auth/loginPage.dart';
+import 'publishedArticles.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -45,7 +46,8 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
           onTap: () {
-            print('hola');
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PublishedArticles()));
           },
         );
 
@@ -57,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                 color: Theme.of(context).accentColor,
               ),
               SizedBox(width: _screenSizeWidth / 20),
-              Text('Articulos adquiridos')
+              Text('Artículos adquiridos')
             ],
           ),
           onTap: () {
