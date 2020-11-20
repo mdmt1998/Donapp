@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'myArticlesPage.dart';
+import 'articlesObtainedPage.dart';
 import 'auth/loginPage.dart';
-import 'publishedArticles.dart';
+import 'articlesPublishedPage.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -47,8 +47,10 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PublishedArticles()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArticlesPublishedPage()));
           },
         );
 
@@ -64,8 +66,10 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyArticlesPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ArticlesObtainedPage()));
           },
         );
 

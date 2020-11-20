@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import 'addArticlePage.dart';
 import 'articleDescriptionPage.dart';
 
-class PublishedArticles extends StatefulWidget {
+class ArticlesObtainedPage extends StatefulWidget {
   @override
-  _PublishedArticlesState createState() => _PublishedArticlesState();
+  _ArticlesObtainedPageState createState() => _ArticlesObtainedPageState();
 }
 
-class _PublishedArticlesState extends State<PublishedArticles> {
+class _ArticlesObtainedPageState extends State<ArticlesObtainedPage> {
   @override
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
@@ -18,27 +17,12 @@ class _PublishedArticlesState extends State<PublishedArticles> {
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Artículos publicados',
+            'Artículos adquiridos',
             style: TextStyle(fontSize: _fontScaling / 0.04),
           ),
         );
 
-    Widget _addArticle() => Card(
-          elevation: 0.5,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddArticlePage()));
-            },
-            child: ListTile(
-                title: Text('Publicar artículo'),
-                leading: Icon(Icons.post_add, color: Colors.green),
-                trailing:
-                    Icon(Icons.arrow_forward_ios, size: _screenSizeWidth / 25)),
-          ),
-        );
-
-    Widget _publishedArticles() => Column(
+    Widget _myArticles() => Column(
           children: List.generate(
             2,
             (index) => Card(
@@ -92,15 +76,7 @@ class _PublishedArticlesState extends State<PublishedArticles> {
                         child: Column(children: [
                       _titleText(),
                       SizedBox(height: _screenSizeWidth / 13),
-                      _addArticle(),
-                      SizedBox(height: _screenSizeWidth / 20),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Container(
-                              height: _screenSizeWidth / 700.0,
-                              color: Colors.grey[400])),
-                      SizedBox(height: _screenSizeWidth / 20),
-                      _publishedArticles(),
+                      _myArticles(),
                       SizedBox(height: _screenSizeWidth / 9),
                     ])),
                   )
