@@ -28,46 +28,40 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
           ),
         );
 
-    Widget _description() => Card(
+    Widget _contact() => Card(
           color: Colors.white,
           elevation: 4.0,
-          child: ExpansionTile(
-            title: Text('Contacto'),
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Nombre Apellido',
-                            style: TextStyle(fontSize: _fontScaling / 0.065)),
-                        SizedBox(height: _screenSizeWidth / 15),
-                        Text('Dirección',
-                            style: TextStyle(fontSize: _fontScaling / 0.065)),
-                        SizedBox(height: _screenSizeWidth / 65),
-                        Text('Ciudad',
-                            style: TextStyle(fontSize: _fontScaling / 0.065)),
-                        SizedBox(height: _screenSizeWidth / 15),
-                        Text('correo@correo.com',
-                            style: TextStyle(fontSize: _fontScaling / 0.065)),
-                        SizedBox(height: _screenSizeWidth / 65),
-                        Text('000 000 0000',
-                            style: TextStyle(fontSize: _fontScaling / 0.065)),
-                        SizedBox(height: _screenSizeWidth / 15),
-                        Text('idAdq.: 1234',
-                            style: TextStyle(fontSize: _fontScaling / 0.08)),
-                      ],
-                    )),
-              ),
-              SizedBox(height: _screenSizeWidth / 20),
-            ],
-            onExpansionChanged: (bool value) {
-              setState(() {
-                isExpanding = value;
-              });
-            },
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Contacto',
+                        style: TextStyle(
+                            fontSize: _fontScaling / 0.04,
+                            color: Theme.of(context).primaryColor)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('Nombre Apellido',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('Dirección',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 65),
+                    Text('Ciudad',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('correo@correo.com',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 65),
+                    Text('000 000 0000',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('idAdq.: 1234',
+                        style: TextStyle(fontSize: _fontScaling / 0.08)),
+                  ],
+                )),
           ),
         );
 
@@ -102,7 +96,7 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
                 SizedBox(height: _screenSizeWidth / 10),
                 _titleText(),
                 SizedBox(height: _screenSizeWidth / 8),
-                _description(),
+                _contact(),
                 SizedBox(height: _screenSizeWidth / 5),
                 _finishButton(),
                 SizedBox(height: _screenSizeWidth / 5),

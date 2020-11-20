@@ -34,6 +34,43 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make'),
         );
 
+    Widget _contact() => Card(
+          color: Colors.white,
+          elevation: 4.0,
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Contacto',
+                        style: TextStyle(
+                            fontSize: _fontScaling / 0.04,
+                            color: Theme.of(context).primaryColor)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('Nombre Apellido',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('Dirección',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 65),
+                    Text('Ciudad',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('correo@correo.com',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 65),
+                    Text('000 000 0000',
+                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    SizedBox(height: _screenSizeWidth / 15),
+                    Text('idAdq.: 1234',
+                        style: TextStyle(fontSize: _fontScaling / 0.08)),
+                  ],
+                )),
+          ),
+        );
+
     /**
      * 
      */
@@ -63,6 +100,8 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
                       _image(),
                       SizedBox(height: _screenSizeWidth / 13),
                       _descrption(),
+                      SizedBox(height: _screenSizeWidth / 13),
+                      _contact(),
                       SizedBox(height: _screenSizeWidth / 9),
                     ])),
                   )

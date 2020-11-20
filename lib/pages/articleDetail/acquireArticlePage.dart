@@ -21,8 +21,6 @@ class AcquireArticlePage extends StatefulWidget {
 }
 
 class _AcquireArticlePageState extends State<AcquireArticlePage> {
-  bool isExpanding = true;
-
   @override
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
@@ -38,32 +36,29 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
 
     Widget _description() => Card(
           color: Colors.white,
-          elevation: 4.0,
-          child: ExpansionTile(
-            title: Text('${widget.articleName}'),
+          elevation: 8.0,
+          child: Column(
             children: [
-              Center(
-                child: Container(
-                    width: _screenSizeWidth,
-                    height: _screenSizeWidth / 2,
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: '${widget.principalImage}',
-                      fit: BoxFit.scaleDown,
-                      placeholderCacheWidth: 100,
-                      alignment: Alignment.topCenter,
-                    )),
-              ),
+              SizedBox(height: _screenSizeWidth / 15),
+              Text('${widget.articleName}',
+                  style: TextStyle(
+                      fontSize: _fontScaling / 0.04,
+                      color: Theme.of(context).primaryColor)),
+              Container(
+                  width: _screenSizeWidth,
+                  height: _screenSizeWidth / 2,
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: '${widget.principalImage}',
+                    fit: BoxFit.scaleDown,
+                    placeholderCacheWidth: 100,
+                    alignment: Alignment.topCenter,
+                  )),
               Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text('${widget.articleDescription}')),
               SizedBox(height: _screenSizeWidth / 20),
             ],
-            onExpansionChanged: (bool value) {
-              setState(() {
-                isExpanding = value;
-              });
-            },
           ),
         );
 
