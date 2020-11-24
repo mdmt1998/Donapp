@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../widgets/buttonWidget.dart';
 import '../widgets/textFormFieldWidget.dart';
@@ -14,18 +17,18 @@ class _AddArticlePageState extends State<AddArticlePage> {
   TextEditingController _articleNameController;
   TextEditingController _descriptionController;
 
-  // Future<PickedFile> _imagePickedFile;
-  // File _selectedPicture;
+  Future<PickedFile> _imagePickedFile;
+  File _selectedPicture;
 
-  // Future _selectImageFromGallery(ImageSource imageSource) async {
-  //   final ImagePicker picker = ImagePicker();
+  Future _selectImageFromGallery(ImageSource imageSource) async {
+    final ImagePicker picker = ImagePicker();
 
-  //   try {
-  //     setState(() {
-  //       _imagePickedFile = picker.getImage(source: imageSource);
-  //     });
-  //   } catch (e) {}
-  // }
+    try {
+      setState(() {
+        _imagePickedFile = picker.getImage(source: imageSource);
+      });
+    } catch (e) {}
+  }
 
   @override
   void initState() {
@@ -75,37 +78,37 @@ class _AddArticlePageState extends State<AddArticlePage> {
           ),
         );
 
-    // Widget _showImage() => FutureBuilder<PickedFile>(
-    //       future: _imagePickedFile,
-    //       builder: (_, snapshot) {
-    //         if ((snapshot.connectionState == ConnectionState.done) &&
-    //             (snapshot.data.path != null)) {
-    //           _selectedPicture = File(snapshot.data.path);
-    //           return Image.file(
-    //             File(snapshot.data.path),
-    //             fit: BoxFit.cover,
-    //           );
-    //         } else if (snapshot.error != null) {
-    //           return Center(
-    //             child: Text('Error al seleccionar la imagen',
-    //                 textAlign: TextAlign.center),
-    //           );
-    //         } else {
-    //           return Text('Presiona para cargar una foto');
-    //         }
-    //       },
-    //     );
+    Widget _showImage() => FutureBuilder<PickedFile>(
+          future: _imagePickedFile,
+          builder: (_, snapshot) {
+            if ((snapshot.connectionState == ConnectionState.done) &&
+                (snapshot.data.path != null)) {
+              _selectedPicture = File(snapshot.data.path);
+              return Image.file(
+                File(snapshot.data.path),
+                fit: BoxFit.cover,
+              );
+            } else if (snapshot.error != null) {
+              return Center(
+                child: Text('Error al seleccionar la imagen',
+                    textAlign: TextAlign.center),
+              );
+            } else {
+              return Text('Presiona para cargar una foto');
+            }
+          },
+        );
 
     Widget _loadPicture() => Container(
           height: _screenSizeWidth / 4,
           width: _screenSizeWidth,
           child: GestureDetector(
             onTap: () {
-              // setState(() => _selectImageFromGallery(ImageSource.gallery));
+              setState(() => _selectImageFromGallery(ImageSource.gallery));
             },
             child: Card(
               elevation: 2.0,
-              // child: Center(child: _showImage()),
+              child: Center(child: _showImage()),
             ),
           ),
         );
