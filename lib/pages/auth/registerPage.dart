@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/auth.dart';
 import '../../widgets/buttonWidget.dart';
 import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';
@@ -12,12 +13,54 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
+  AuthService _authService = AuthService();
+
   TextEditingController _emailController;
   TextEditingController _passwordController;
   TextEditingController _addressController;
   TextEditingController _phoneController;
   TextEditingController _nameController;
   TextEditingController _cityController;
+
+  RegExp _regex;
+  Pattern _pattern;
+
+  String _validateEmail(value) {
+    _pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    _regex = RegExp(_pattern);
+    if (value.isEmpty) {
+      return 'El campo correo electrónico es obligatorio';
+    } else {
+      if (!_regex.hasMatch(value)) {
+        return 'Debe ser un correo electrónico válido';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String _validatePassword(value) {
+    _pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,}$';
+    _regex = RegExp(_pattern);
+    if (value.isEmpty) {
+      return 'El campo contraseña es obligatorio';
+    } else {
+      if (!_regex.hasMatch(value)) {
+        return 'El formato del campo contraseña no es válido';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String _validateInputs(value) {
+    if (value.isEmpty) {
+      return 'El campo es obligatorio';
+    } else {
+      return null;
+    }
+  }
 
   @override
   void initState() {
@@ -56,43 +99,55 @@ class _RegisterPageState extends State<RegisterPage> {
 
     Widget _registerFields() => Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormFieldWidget(
-                hintText: 'Nombre completo',
-                controller: _nameController,
-                textInputType: TextInputType.text,
-              ),
-              SizedBox(height: _screenSizeWidth / 20),
-              TextFormFieldWidget(
-                hintText: 'correo@correo.com',
-                controller: _emailController,
-                textInputType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: _screenSizeWidth / 20),
-              TextFormFieldWidget(
-                  hintText: 'Contraseña',
-                  controller: _passwordController,
-                  textInputType: TextInputType.text),
-              SizedBox(height: _screenSizeWidth / 20),
-              TextFormFieldWidget(
-                hintText: 'Ciudad',
-                controller: _cityController,
-                textInputType: TextInputType.text,
-              ),
-              SizedBox(height: _screenSizeWidth / 20),
-              TextFormFieldWidget(
-                hintText: 'Dirección',
-                controller: _addressController,
-                textInputType: TextInputType.text,
-              ),
-              SizedBox(height: _screenSizeWidth / 20),
-              TextFormFieldWidget(
-                  hintText: 'Número telefónico',
-                  controller: _phoneController,
-                  textInputType: TextInputType.phone)
-            ],
-          ),
+          child: Column(children: [
+            TextFormFieldWidget(
+              hintText: 'Nombre completo',
+              controller: _nameController,
+              textInputType: TextInputType.text,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validateInputs,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+              hintText: 'correo@correo.com',
+              controller: _emailController,
+              textInputType: TextInputType.emailAddress,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validateEmail,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+              hintText: 'Contraseña',
+              controller: _passwordController,
+              textInputType: TextInputType.text,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validatePassword,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+              hintText: 'Ciudad',
+              controller: _cityController,
+              textInputType: TextInputType.text,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validateInputs,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+              hintText: 'Dirección',
+              controller: _addressController,
+              textInputType: TextInputType.text,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validateInputs,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+              hintText: 'Número telefónico',
+              controller: _phoneController,
+              textInputType: TextInputType.phone,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validateInputs,
+            )
+          ]),
         );
 
     Widget _registerButton() => ButtonWidget(
@@ -100,9 +155,29 @@ class _RegisterPageState extends State<RegisterPage> {
           elevation: 3,
           height: _screenSizeWidth / 11,
           width: _screenSizeWidth / 2.5,
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+          onPressed: () async {
+            if (!_formKey.currentState.validate()) return;
+
+            try {
+              var result = await _authService.register(
+                  _emailController.text, _passwordController.text);
+
+              print(result);
+
+              if (result == null) {
+                print('error');
+              } else {
+                print('CREADA');
+                print('${result.uid}');
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HiddenDrowerMenu()));
+              }
+            } catch (e) {
+              print(e.toString());
+            }
           },
         );
 

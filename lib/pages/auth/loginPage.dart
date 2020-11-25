@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/auth.dart';
 import '../../widgets/buttonWidget.dart';
 import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';
@@ -13,21 +14,42 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
+  AuthService _authService = AuthService();
+
   TextEditingController _emailController;
   TextEditingController _passwordController;
 
-  bool autoValidate = false;
+  RegExp _regex;
+  Pattern _pattern;
 
-  // _validateInputs() {
-  //   final form = _formKey.currentState;
-  //   if (form.validate()) {
-  //     form.save();
-  //   } else {
-  //     setState(() {
-  //       autoValidate = true;
-  //     });
-  //   }
-  // }
+  String _validateEmail(value) {
+    _pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    _regex = RegExp(_pattern);
+    if (value.isEmpty) {
+      return 'El campo correo electrónico es obligatorio';
+    } else {
+      if (!_regex.hasMatch(value)) {
+        return 'Debe ser un correo electrónico válido';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String _validatePassword(value) {
+    _pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.!@#\$&*~]).{8,}$';
+    _regex = RegExp(_pattern);
+    if (value.isEmpty) {
+      return 'El campo contraseña es obligatorio';
+    } else {
+      if (!_regex.hasMatch(value)) {
+        return 'El formato del campo contraseña no es válido';
+      } else {
+        return null;
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -60,16 +82,18 @@ class _LoginPageState extends State<LoginPage> {
           key: _formKey,
           child: Column(children: [
             TextFormFieldWidget(
-              hintText: 'correo@correo.com',
-              controller: _emailController,
-              autoValidateMode: AutovalidateMode.always,
-              textInputType: TextInputType.emailAddress,
-            ),
+                hintText: 'correo@correo.com',
+                controller: _emailController,
+                autoValidateMode: AutovalidateMode.onUserInteraction,
+                textInputType: TextInputType.emailAddress,
+                validator: _validateEmail),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
                 hintText: 'Contraseña',
                 controller: _passwordController,
-                textInputType: TextInputType.text),
+                textInputType: TextInputType.text,
+                autoValidateMode: AutovalidateMode.onUserInteraction,
+                validator: _validatePassword),
           ]),
         );
 
@@ -89,9 +113,29 @@ class _LoginPageState extends State<LoginPage> {
           height: _screenSizeWidth / 11,
           width: _screenSizeWidth / 2.5,
           elevation: 2,
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+          onPressed: () async {
+            if (!_formKey.currentState.validate()) return;
+
+            try {
+              var result = await _authService.signIn(
+                  _emailController.text, _passwordController.text);
+
+              print(result);
+
+              if (result == null) {
+                print('error');
+              } else {
+                print('ENTRA');
+                print('${result.uid}');
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HiddenDrowerMenu()));
+              }
+            } catch (e) {
+              print(e.toString());
+            }
           },
         );
 
