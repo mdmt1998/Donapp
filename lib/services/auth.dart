@@ -11,20 +11,6 @@ class AuthService {
     return firebaseUser != null ? UserModel(uId: firebaseUser.uid) : null;
   }
 
-  // sign
-  // Future sign() async {
-  //   try {
-  //     var result = await _firebaseAuth.signInAnonymously();
-  //     var user = result.user;
-
-  //     return _userFromFirebaseUser(user);
-  //   } catch (e) {
-  //     print(e.toString());
-
-  //     return null;
-  //   }
-  // }
-
   Stream<UserModel> get user {
     return _firebaseAuth.authStateChanges().map(_userFromFirebaseUser);
   }
@@ -47,15 +33,36 @@ class AuthService {
     }
   }
 
+  Future userData(String uId, String email, String password, String name,
+      String address, int phoneNumber, String city) async {
+    try {
+      var data = {
+        'uId': uId,
+        'email': email, //
+        'password': password, //
+        'name': name,
+        'address': address,
+        'phoneNumber': phoneNumber,
+        'city': city
+      };
+
+      await _database.reference().child('User').push().set(data);
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future register(String email, String password) async {
     try {
-      // UserCredential userCredential = await FirebaseAuth.instance
-      //     .createUserWithEmailAndPassword(
-      //         email: "barry.allen@example.com",
-      //         password: "SuperSecretPassword!");
-
       var user = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      //     _database. .database().ref('users/' + user.uid).set({
+      //     firstName: firstName,
+      //     lastName: lastNames
+      // })
 
       print('Registered ${user.user}');
       return user.user;
