@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../services/auth.dart';
 import 'articlesObtainedPage.dart';
-import 'auth/loginPage.dart';
 import 'articlesPublishedPage.dart';
+import 'auth/loginPage.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  AuthService _authService = AuthService();
+
+  bool _isloading = false;
+
   @override
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
@@ -82,10 +92,16 @@ class ProfilePage extends StatelessWidget {
             SizedBox(width: _screenSizeWidth / 20),
             Text('Cerrar sesión')
           ]),
-          onTap: () {
+          onTap: () async {
+            setState(() => _isloading = true);
+
+            await _authService.signOut();
+
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => LoginPage()),
                 (Route<dynamic> route) => false);
+
+            setState(() => _isloading = false);
           },
         );
 
@@ -97,31 +113,39 @@ class ProfilePage extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-            body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: _screenSizeWidth / 20),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            _titleText(),
-            SizedBox(height: _screenSizeWidth / 10),
-            _userInformation(),
-            SizedBox(height: _screenSizeWidth / 10),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                    height: _screenSizeWidth / 700.0, color: Colors.grey[400])),
-            SizedBox(height: _screenSizeWidth / 10),
-            _userPublishedArticles(),
-            SizedBox(height: _screenSizeWidth / 20),
-            _acquireArticles(),
-            SizedBox(height: _screenSizeWidth / 3),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                    height: _screenSizeWidth / 700.0, color: Colors.grey[400])),
-            SizedBox(height: _screenSizeWidth / 20),
-            _logout()
-          ]),
-        )),
+            body: _isloading
+                ? Center(child: CircularProgressIndicator())
+                : Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: _screenSizeWidth / 20),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _titleText(),
+                          SizedBox(height: _screenSizeWidth / 10),
+                          _userInformation(),
+                          SizedBox(height: _screenSizeWidth / 10),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Container(
+                                  height: _screenSizeWidth / 700.0,
+                                  color: Colors.grey[400])),
+                          SizedBox(height: _screenSizeWidth / 10),
+                          _userPublishedArticles(),
+                          SizedBox(height: _screenSizeWidth / 20),
+                          _acquireArticles(),
+                          SizedBox(height: _screenSizeWidth / 3),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Container(
+                                  height: _screenSizeWidth / 700.0,
+                                  color: Colors.grey[400])),
+                          SizedBox(height: _screenSizeWidth / 20),
+                          _logout()
+                        ]),
+                  )),
       ),
     );
   }

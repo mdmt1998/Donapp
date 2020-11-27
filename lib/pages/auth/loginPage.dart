@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   RegExp _regex;
   Pattern _pattern;
 
+  bool _isloading = false;
+
   String _validateEmail(value) {
     _pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -117,6 +119,8 @@ class _LoginPageState extends State<LoginPage> {
             if (!_formKey.currentState.validate()) return;
 
             try {
+              setState(() => _isloading = true);
+
               var result = await _authService.signIn(
                   _emailController.text, _passwordController.text);
 
@@ -133,6 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(
                         builder: (context) => HiddenDrowerMenu()));
               }
+
+              setState(() => _isloading = false);
             } catch (e) {
               print(e.toString());
             }
@@ -148,41 +154,43 @@ class _LoginPageState extends State<LoginPage> {
         bottom: false,
         child: Scaffold(
           backgroundColor: Colors.black87,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                height: _screenSizeWidth / 1.13,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(_screenSizeWidth / 10),
-                        topLeft: Radius.circular(_screenSizeWidth / 10))),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: _screenSizeWidth / 15,
-                      top: _screenSizeWidth / 15,
-                      right: _screenSizeWidth / 15),
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          _titleText(),
-                          SizedBox(height: _screenSizeWidth / 15),
-                          _loginFields(),
-                          _createAccount(),
-                          SizedBox(height: _screenSizeWidth / 50),
-                          _loginButton(),
-                          SizedBox(height: _screenSizeWidth / 900),
-                        ],
-                      )
-                    ],
-                  ),
+          body: _isloading
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: _screenSizeWidth / 1.13,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(_screenSizeWidth / 10),
+                              topLeft: Radius.circular(_screenSizeWidth / 10))),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: _screenSizeWidth / 15,
+                            top: _screenSizeWidth / 15,
+                            right: _screenSizeWidth / 15),
+                        child: Stack(
+                          children: [
+                            Column(
+                              children: [
+                                _titleText(),
+                                SizedBox(height: _screenSizeWidth / 15),
+                                _loginFields(),
+                                _createAccount(),
+                                SizedBox(height: _screenSizeWidth / 50),
+                                _loginButton(),
+                                SizedBox(height: _screenSizeWidth / 900),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );

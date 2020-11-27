@@ -25,6 +25,8 @@ class _RegisterPageState extends State<RegisterPage> {
   RegExp _regex;
   Pattern _pattern;
 
+  bool _isloading = false;
+
   String _validateEmail(value) {
     _pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -159,6 +161,8 @@ class _RegisterPageState extends State<RegisterPage> {
             if (!_formKey.currentState.validate()) return;
 
             try {
+              setState(() => _isloading = true);
+
               var result = await _authService.register(
                   _emailController.text, _passwordController.text);
 
@@ -170,11 +174,22 @@ class _RegisterPageState extends State<RegisterPage> {
                 print('CREADA');
                 print('${result.uid}');
 
+                await _authService.userData(
+                    result.uid.toString(),
+                    _emailController.text,
+                    _passwordController.text,
+                    _nameController.text,
+                    _addressController.text,
+                    int.tryParse(_phoneController.text),
+                    _cityController.text);
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => HiddenDrowerMenu()));
               }
+
+              setState(() => _isloading = false);
             } catch (e) {
               print(e.toString());
             }
@@ -189,36 +204,38 @@ class _RegisterPageState extends State<RegisterPage> {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: _screenSizeWidth / 20,
-            ),
-            child: SingleChildScrollView(
-                child: Column(
-              children: [
-                Row(children: [
-                  Padding(
-                      padding: EdgeInsets.only(
-                          left: _screenSizeWidth / 60,
-                          top: _screenSizeWidth / 50),
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }))
-                ]),
-                _titleText(),
-                SizedBox(height: _screenSizeWidth / 20),
-                _registerFields(),
-                SizedBox(height: _screenSizeWidth / 10),
-                _registerButton(),
-                SizedBox(height: _screenSizeWidth / 5),
-              ],
-            )),
-          ),
+          body: _isloading
+              ? Center(child: CircularProgressIndicator())
+              : Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: _screenSizeWidth / 20,
+                  ),
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      Row(children: [
+                        Padding(
+                            padding: EdgeInsets.only(
+                                left: _screenSizeWidth / 60,
+                                top: _screenSizeWidth / 50),
+                            child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }))
+                      ]),
+                      _titleText(),
+                      SizedBox(height: _screenSizeWidth / 20),
+                      _registerFields(),
+                      SizedBox(height: _screenSizeWidth / 10),
+                      _registerButton(),
+                      SizedBox(height: _screenSizeWidth / 5),
+                    ],
+                  )),
+                ),
         ),
       ),
     );
