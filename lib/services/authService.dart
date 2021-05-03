@@ -1,4 +1,3 @@
-import 'package:donapp/models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -6,14 +5,14 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseDatabase _database = FirebaseDatabase.instance;
 
-  // create user obj based on firebase User
-  UserModel _userFromFirebaseUser(User firebaseUser) {
-    return firebaseUser != null ? UserModel(uId: firebaseUser.uid) : null;
-  }
+  // // create user obj based on firebase User
+  // UserModel _userFromFirebaseUser(User firebaseUser) {
+  //   return firebaseUser != null ? UserModel(uId: firebaseUser.uid) : null;
+  // }
 
-  Stream<UserModel> get user {
-    return _firebaseAuth.authStateChanges().map(_userFromFirebaseUser);
-  }
+  // Stream<UserModel> get user {
+  //   return _firebaseAuth.authStateChanges().map(_userFromFirebaseUser);
+  // }
 
   Future signIn(String email, String password) async {
     try {

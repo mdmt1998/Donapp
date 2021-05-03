@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../services/auth.dart';
+import '../../services/authService.dart';
 import '../../widgets/buttonWidget.dart';
 import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';

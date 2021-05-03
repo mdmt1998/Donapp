@@ -51,7 +51,7 @@ class _ArticlesObtainedPageState extends State<ArticlesObtainedPage> {
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,

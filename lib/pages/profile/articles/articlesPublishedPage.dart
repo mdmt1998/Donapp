@@ -67,7 +67,7 @@ class _ArticlesPublishedPageState extends State<ArticlesPublishedPage> {
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,

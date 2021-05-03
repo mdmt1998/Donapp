@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../widgets/buttonWidget.dart';
+import '../../../widgets/buttonWidget.dart';
 import 'acquireArticlePage.dart';
 import 'donorContactPage.dart';
 
@@ -142,7 +142,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,

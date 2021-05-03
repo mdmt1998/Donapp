@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages/articleDetail/articleDetailPage.dart';
+import '../pages/home/articleDetail/articleDetailPage.dart';
 
 class ArticlesGridViewWidget extends StatefulWidget {
   final String articleImage;
@@ -23,8 +23,8 @@ class _ArticlesGridViewWidgetState extends State<ArticlesGridViewWidget> {
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
     /**
-    * 
-    */
+     *
+     */
     return Scaffold(
       body: GridView.count(
         crossAxisCount: 2,

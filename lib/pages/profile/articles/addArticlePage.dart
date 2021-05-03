@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../widgets/buttonWidget.dart';
-import '../widgets/textFormFieldWidget.dart';
+import '../../../widgets/buttonWidget.dart';
+import '../../../widgets/textFormFieldWidget.dart';
 
 class AddArticlePage extends StatefulWidget {
   @override
@@ -59,23 +59,21 @@ class _AddArticlePageState extends State<AddArticlePage> {
 
     Widget _registerFields() => Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormFieldWidget(
-                hintText: 'Nombre del artículo',
-                controller: _articleNameController,
-                textInputType: TextInputType.text,
-              ),
-              SizedBox(height: _screenSizeWidth / 20),
-              TextFormFieldWidget(
-                hintText: 'Descripción',
-                controller: _descriptionController,
-                maxLines: 3,
-                textInputType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: _screenSizeWidth / 20)
-            ],
-          ),
+          child: Column(children: [
+            TextFormFieldWidget(
+              hintText: 'Nombre del artículo',
+              controller: _articleNameController,
+              textInputType: TextInputType.text,
+            ),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
+              hintText: 'Descripción',
+              controller: _descriptionController,
+              maxLines: 3,
+              textInputType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: _screenSizeWidth / 20)
+          ]),
         );
 
     Widget _showImage() => FutureBuilder<PickedFile>(
@@ -90,9 +88,8 @@ class _AddArticlePageState extends State<AddArticlePage> {
               );
             } else if (snapshot.error != null) {
               return Center(
-                child: Text('Error al seleccionar la imagen',
-                    textAlign: TextAlign.center),
-              );
+                  child: Text('Error al seleccionar la imagen',
+                      textAlign: TextAlign.center));
             } else {
               return Text('Presiona para cargar una foto');
             }
@@ -104,12 +101,11 @@ class _AddArticlePageState extends State<AddArticlePage> {
           width: _screenSizeWidth,
           child: GestureDetector(
             onTap: () {
-              setState(() => _selectImageFromGallery(ImageSource.gallery));
+              // setState(() {
+              _selectImageFromGallery(ImageSource.gallery);
+              // });
             },
-            child: Card(
-              elevation: 2.0,
-              child: Center(child: _showImage()),
-            ),
+            child: Card(elevation: 2.0, child: Center(child: _showImage())),
           ),
         );
 
@@ -125,7 +121,7 @@ class _AddArticlePageState extends State<AddArticlePage> {
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,

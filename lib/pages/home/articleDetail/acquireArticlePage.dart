@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../widgets/buttonWidget.dart';
+import '../../../widgets/buttonWidget.dart';
 import 'successfullyAcquirePage.dart';
 
 class AcquireArticlePage extends StatefulWidget {
@@ -74,8 +74,8 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
         );
 
     /**
-    * 
-    */
+     *
+     */
     return Container(
       color: Colors.white,
       child: SafeArea(

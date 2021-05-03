@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../services/auth.dart';
-import 'articlesObtainedPage.dart';
-import 'articlesPublishedPage.dart';
-import 'auth/loginPage.dart';
+import 'articles/articlesObtainedPage.dart';
+import 'articles/articlesPublishedPage.dart';
+import '../auth/loginPage.dart';
+import '../../services/authService.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,

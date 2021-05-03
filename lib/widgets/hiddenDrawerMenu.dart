@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 
 import '../pages/home/homePage.dart';
-import '../pages/profilePage.dart';
+import '../pages/profile/profilePage.dart';
 
 class HiddenDrowerMenu extends StatefulWidget {
   @override
