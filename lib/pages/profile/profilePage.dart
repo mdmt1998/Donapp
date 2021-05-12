@@ -1,20 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'articles/articlesObtainedPage.dart';
+import '../../repositories/profile/profileRepository.dart';
+import '../../repositories/authRepository.dart';
+import '../../models/auth/userDataModel.dart';
 import 'articles/articlesPublishedPage.dart';
+import 'articles/articlesObtainedPage.dart';
 import '../auth/loginPage.dart';
-import '../../services/authService.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String uId;
+
+  const ProfilePage({Key key, @required this.uId}) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  AuthService _authService = AuthService();
+  AuthRepository _authRepository = AuthRepository();
+  ProfileRepository _profileRepository = ProfileRepository();
+  UserData _userData = UserData();
 
   bool _isloading = false;
+
+  _getUserInformation() async {
+    setState(() => _isloading = true);
+
+    try {
+      await _profileRepository
+          .getUserData(widget.uId)
+          .then((value) => setState(() => _userData = value));
+    } catch (e) {
+      print(e.toString());
+    }
+
+    setState(() => _isloading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInformation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +65,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Theme.of(context).accentColor,
                 height: _screenSizeWidth / 4.5),
             SizedBox(height: _screenSizeWidth / 20),
-            Text('Nombre Apellido'),
+            Text(_userData?.name),
             SizedBox(height: _screenSizeWidth / 40),
-            Text('Direccion'),
+            Text(_userData?.address),
             SizedBox(height: _screenSizeWidth / 40),
-            Text('Ciudad')
+            Text(_userData?.city)
           ]),
         );
 
@@ -95,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
           onTap: () async {
             setState(() => _isloading = true);
 
-            await _authService.signOut();
+            await _authRepository.signOut();
 
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => LoginPage()),

@@ -1,9 +1,8 @@
-import 'package:donapp/widgets/buttonWidget.dart';
-import 'package:donapp/widgets/hiddenDrawerMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-
+import '../../../widgets/buttonWidget.dart';
+import '../../../widgets/hiddenDrawerMenu.dart';
 
 class SuccessfullyAcquirePage extends StatefulWidget {
   @override
@@ -77,8 +76,8 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
         );
 
     /**
-    * 
-    */
+     *
+     */
     return Container(
       color: Colors.white,
       child: SafeArea(

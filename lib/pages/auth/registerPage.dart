@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../services/authService.dart';
+import '../../repositories/authRepository.dart';
 import '../../widgets/buttonWidget.dart';
 import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';
+import '../../models/auth/userDataModel.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
-  AuthService _authService = AuthService();
+  AuthRepository _authService = AuthRepository();
 
   TextEditingController _emailController;
   TextEditingController _passwordController;
@@ -163,7 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
             try {
               setState(() => _isloading = true);
 
-              var result = await _authService.register(
+              var result = await _authService.registerEmailAndPassword(
                   _emailController.text, _passwordController.text);
 
               print(result);
@@ -172,21 +173,32 @@ class _RegisterPageState extends State<RegisterPage> {
                 print('error');
               } else {
                 print('CREADA');
-                print('${result.uid}');
+                print('${result?.uid}');
 
-                await _authService.userData(
-                    result.uid.toString(),
-                    _emailController.text,
-                    _passwordController.text,
-                    _nameController.text,
-                    _addressController.text,
-                    int.tryParse(_phoneController.text),
-                    _cityController.text);
+                var userData = UserData(
+                    uId: result?.uid,
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    name: _nameController.text,
+                    address: _addressController.text,
+                    phoneNumber: int.tryParse(_phoneController.text),
+                    city: _cityController.text);
+
+                await _authService.registerUserData(userData
+                    // result.uid.toString(),
+                    // _emailController.text,
+                    // _passwordController.text,
+                    // _nameController.text,
+                    // _addressController.text,
+                    // int.tryParse(_phoneController.text),
+                    // _cityController.text
+                    );
 
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => HiddenDrowerMenu()));
+                        builder: (context) =>
+                            HiddenDrowerMenu(uId: result?.uid.toString())));
               }
 
               setState(() => _isloading = false);
@@ -197,7 +209,7 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,

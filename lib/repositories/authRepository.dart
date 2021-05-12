@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class AuthService {
+import '../models/auth/userDataModel.dart';
+
+class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseDatabase _database = FirebaseDatabase.instance;
 
@@ -32,20 +34,19 @@ class AuthService {
     }
   }
 
-  Future userData(String uId, String email, String password, String name,
-      String address, int phoneNumber, String city) async {
+  Future registerUserData(UserData data) async {
     try {
-      var data = {
-        'uId': uId,
-        'email': email, //
-        'password': password, //
-        'name': name,
-        'address': address,
-        'phoneNumber': phoneNumber,
-        'city': city
-      };
+      // var data = {
+      //   'uId': uId,
+      //   'email': email, //
+      //   'password': password, //
+      //   'name': name,
+      //   'address': address,
+      //   'phoneNumber': phoneNumber,
+      //   'city': city
+      // };
 
-      await _database.reference().child('User').push().set(data);
+      await _database.reference().child('User').push().set(data.toJson());
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     } catch (e) {
@@ -53,7 +54,7 @@ class AuthService {
     }
   }
 
-  Future register(String email, String password) async {
+  Future registerEmailAndPassword(String email, String password) async {
     try {
       var user = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);

@@ -1,6 +1,6 @@
+import '../../repositories/authRepository.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/authService.dart';
 import '../../widgets/buttonWidget.dart';
 import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';
@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  AuthService _authService = AuthService();
+  AuthRepository _authService = AuthRepository();
 
   TextEditingController _emailController;
   TextEditingController _passwordController;
@@ -116,37 +116,39 @@ class _LoginPageState extends State<LoginPage> {
           width: _screenSizeWidth / 2.5,
           elevation: 2,
           onPressed: () async {
+            setState(() => _isloading = true);
+
             if (!_formKey.currentState.validate()) return;
 
             try {
-              setState(() => _isloading = true);
-
               var result = await _authService.signIn(
                   _emailController.text, _passwordController.text);
 
+              print('============');
               print(result);
+              print('============');
 
               if (result == null) {
                 print('error');
               } else {
                 print('ENTRA');
-                print('${result.uid}');
+                print('${result?.uid}');
 
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => HiddenDrowerMenu()));
+                        builder: (context) =>
+                            HiddenDrowerMenu(uId: result?.uid.toString())));
               }
-
-              setState(() => _isloading = false);
             } catch (e) {
               print(e.toString());
             }
+            setState(() => _isloading = false);
           },
         );
 
     /**
-     * 
+     *
      */
     return Container(
       color: Colors.white,
