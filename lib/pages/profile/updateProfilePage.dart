@@ -1,9 +1,9 @@
-import 'package:donapp/widgets/hiddenDrawerMenu.dart';
 import 'package:flutter/material.dart';
 
 import '../../repositories/profile/profileRepository.dart';
 import '../../widgets/textFormFieldWidget.dart';
 import '../../models/auth/userDataModel.dart';
+import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/buttonWidget.dart';
 
 class UpdateProfilePage extends StatefulWidget {
@@ -19,9 +19,6 @@ class UpdateProfilePage extends StatefulWidget {
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   ProfileRepository _profileRepository = ProfileRepository();
-
-  RegExp _regex;
-  Pattern _pattern;
 
   final _formKey = GlobalKey<FormState>();
 

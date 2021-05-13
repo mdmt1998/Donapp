@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../repositories/authRepository.dart';
-import '../../widgets/buttonWidget.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
+import '../../repositories/auth/authRepository.dart';
 import '../../widgets/textFormFieldWidget.dart';
 import '../../models/auth/userDataModel.dart';
+import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/buttonWidget.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

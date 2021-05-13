@@ -1,9 +1,9 @@
-import '../../repositories/authRepository.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/buttonWidget.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
+import '../../repositories/auth/authRepository.dart';
 import '../../widgets/textFormFieldWidget.dart';
+import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/buttonWidget.dart';
 import 'registerPage.dart';
 
 class LoginPage extends StatefulWidget {

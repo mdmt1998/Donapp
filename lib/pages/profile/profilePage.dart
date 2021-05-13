@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../repositories/profile/profileRepository.dart';
-import '../../repositories/authRepository.dart';
+import '../../repositories/auth/authRepository.dart';
 import '../../models/auth/userDataModel.dart';
 import 'articles/articlesPublishedPage.dart';
 import 'articles/articlesObtainedPage.dart';

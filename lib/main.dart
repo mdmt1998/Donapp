@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     // final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
     /**
-     * 
+     *
      */
     return MaterialApp(
       title: 'DonApp',
