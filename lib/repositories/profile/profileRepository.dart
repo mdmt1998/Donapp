@@ -30,4 +30,43 @@ class ProfileRepository {
       print(e.toString());
     }
   }
+
+  getNodeValueByUId(String uId) async {
+    try {
+      var data = await _database
+          .reference()
+          .child('User') // node
+          .orderByChild('uId') // property
+          .equalTo('$uId')
+          .once()
+          .then((DataSnapshot snapshot) {
+        final value = snapshot.value as Map;
+
+        return value.keys
+            .toString()
+            .replaceFirst('(', '')
+            .replaceFirst(')', '');
+      });
+
+      return data;
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future updateUserData(UserData data, String nodeValue) async {
+    try {
+      await _database
+          .reference()
+          .child('User')
+          .child(nodeValue)
+          .update(data.toJson());
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

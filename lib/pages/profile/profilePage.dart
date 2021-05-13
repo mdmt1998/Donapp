@@ -6,6 +6,7 @@ import '../../repositories/authRepository.dart';
 import '../../models/auth/userDataModel.dart';
 import 'articles/articlesPublishedPage.dart';
 import 'articles/articlesObtainedPage.dart';
+import 'updateProfilePage.dart';
 import '../auth/loginPage.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   UserData _userData = UserData();
 
   bool _isloading = false;
+  String _nodeValue = '';
 
   _getUserInformation() async {
     setState(() => _isloading = true);
@@ -31,6 +33,10 @@ class _ProfilePageState extends State<ProfilePage> {
       await _profileRepository
           .getUserData(widget.uId)
           .then((value) => setState(() => _userData = value));
+
+      await _profileRepository
+          .getNodeValueByUId(widget.uId)
+          .then((value) => setState(() => _nodeValue = value));
     } catch (e) {
       print(e.toString());
     }
@@ -71,6 +77,23 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: _screenSizeWidth / 40),
             Text(_userData?.city)
           ]),
+        );
+
+    Widget _updateUserData() => GestureDetector(
+          child: Row(children: [
+            Icon(Icons.edit, color: Theme.of(context).accentColor),
+            SizedBox(width: _screenSizeWidth / 20),
+            Text('Actualizar perfil')
+          ]),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UpdateProfilePage(
+                          userData: _userData,
+                          nodeValue: _nodeValue,
+                        )));
+          },
         );
 
     Widget _userPublishedArticles() => GestureDetector(
@@ -160,10 +183,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   height: _screenSizeWidth / 700.0,
                                   color: Colors.grey[400])),
                           SizedBox(height: _screenSizeWidth / 10),
+                          _updateUserData(),
+                          SizedBox(height: _screenSizeWidth / 10),
                           _userPublishedArticles(),
                           SizedBox(height: _screenSizeWidth / 20),
                           _acquireArticles(),
-                          SizedBox(height: _screenSizeWidth / 3),
+                          SizedBox(height: _screenSizeWidth / 7),
                           Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
