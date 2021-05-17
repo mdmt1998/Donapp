@@ -5,6 +5,10 @@ import 'addArticlePage.dart';
 import 'articleDescriptionPage.dart';
 
 class ArticlesPublishedPage extends StatefulWidget {
+  final String uId;
+
+  const ArticlesPublishedPage({Key key, @required this.uId}) : super(key: key);
+
   @override
   _ArticlesPublishedPageState createState() => _ArticlesPublishedPageState();
 }
@@ -27,8 +31,10 @@ class _ArticlesPublishedPageState extends State<ArticlesPublishedPage> {
           elevation: 0.5,
           child: InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddArticlePage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddArticlePage(uId: widget.uId)));
             },
             child: ListTile(
                 title: Text('Publicar artículo'),

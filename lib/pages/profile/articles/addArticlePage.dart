@@ -1,12 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../widgets/buttonWidget.dart';
+import '../../../repositories/articles/articlesRepository.dart';
 import '../../../widgets/textFormFieldWidget.dart';
+import '../../../models/articles/imageModel.dart';
+import '../../../widgets/hiddenDrawerMenu.dart';
+import '../../../widgets/buttonWidget.dart';
 
 class AddArticlePage extends StatefulWidget {
+  final String uId;
+
+  const AddArticlePage({Key key, @required this.uId}) : super(key: key);
+
   @override
   _AddArticlePageState createState() => _AddArticlePageState();
 }
@@ -14,11 +22,17 @@ class AddArticlePage extends StatefulWidget {
 class _AddArticlePageState extends State<AddArticlePage> {
   final _formKey = GlobalKey<FormState>();
 
+  ArticlesRepository _articlesRepository = ArticlesRepository();
+
   TextEditingController _articleNameController;
   TextEditingController _descriptionController;
 
   Future<PickedFile> _imagePickedFile;
   File _selectedPicture;
+
+  String _img;
+
+  bool _isloading = false;
 
   Future _selectImageFromGallery(ImageSource imageSource) async {
     final ImagePicker picker = ImagePicker();
@@ -28,6 +42,32 @@ class _AddArticlePageState extends State<AddArticlePage> {
         _imagePickedFile = picker.getImage(source: imageSource);
       });
     } catch (e) {}
+  }
+
+  _postArticle(BuildContext context) async {
+    setState(() => _isloading = true);
+
+    final Directory systemTempDir = Directory.systemTemp;
+    final byteData = await rootBundle.load(_img);
+    final file =
+        File('${systemTempDir.path}/${_articleNameController.text}.jpeg');
+
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    var image = ImageModel(
+        file: file,
+        description: _descriptionController.text,
+        imageName: _articleNameController.text);
+
+    await _articlesRepository.postArticle(image, widget.uId);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HiddenDrowerMenu(uId: widget.uId)));
+
+    setState(() => _isloading = false);
   }
 
   @override
@@ -81,6 +121,7 @@ class _AddArticlePageState extends State<AddArticlePage> {
           builder: (_, snapshot) {
             if ((snapshot.connectionState == ConnectionState.done) &&
                 (snapshot.data.path != null)) {
+              _img = snapshot.data.path;
               _selectedPicture = File(snapshot.data.path);
               return Image.file(
                 File(snapshot.data.path),
@@ -114,9 +155,8 @@ class _AddArticlePageState extends State<AddArticlePage> {
           elevation: 3,
           height: _screenSizeWidth / 11,
           width: _screenSizeWidth / 2.5,
-          onPressed: () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+          onPressed: () async {
+            await _postArticle(context);
           },
         );
 
@@ -127,35 +167,37 @@ class _AddArticlePageState extends State<AddArticlePage> {
       color: Colors.white,
       child: SafeArea(
           bottom: false,
-          child: Scaffold(
-              appBar: AppBar(
-                elevation: 0.0,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                leading: IconButton(
-                    icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-              ),
-              body: SingleChildScrollView(
-                child: Column(children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: _screenSizeWidth / 20),
-                    child: Container(
-                        child: Column(children: [
-                      _titleText(),
-                      SizedBox(height: _screenSizeWidth / 13),
-                      _registerFields(),
-                      SizedBox(height: _screenSizeWidth / 20),
-                      _loadPicture(),
-                      SizedBox(height: _screenSizeWidth / 7),
-                      _buttonPublish(),
-                      SizedBox(height: _screenSizeWidth / 9),
-                    ])),
-                  )
-                ]),
-              ))),
+          child: _isloading
+              ? Center(child: CircularProgressIndicator())
+              : Scaffold(
+                  appBar: AppBar(
+                    elevation: 0.0,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    leading: IconButton(
+                        icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ),
+                  body: SingleChildScrollView(
+                    child: Column(children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: _screenSizeWidth / 20),
+                        child: Container(
+                            child: Column(children: [
+                          _titleText(),
+                          SizedBox(height: _screenSizeWidth / 13),
+                          _registerFields(),
+                          SizedBox(height: _screenSizeWidth / 20),
+                          _loadPicture(),
+                          SizedBox(height: _screenSizeWidth / 7),
+                          _buttonPublish(),
+                          SizedBox(height: _screenSizeWidth / 9),
+                        ])),
+                      )
+                    ]),
+                  ))),
     );
   }
 }
