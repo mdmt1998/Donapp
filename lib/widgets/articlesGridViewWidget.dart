@@ -66,10 +66,10 @@ class _ArticlesGridViewWidgetState extends State<ArticlesGridViewWidget> {
                             ])),
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ArticleDetailPage()),
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ArticleDetailPage(
+                                  articleMap: widget.articlesList[index])));
                     },
                   ),
                 ));

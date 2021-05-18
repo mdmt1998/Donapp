@@ -1,3 +1,4 @@
+import 'package:donapp/repositories/globals/sharedPreferences/sharedPrefences.dart';
 import 'package:flutter/material.dart';
 
 import '../../repositories/auth/authRepository.dart';
@@ -137,8 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            HiddenDrowerMenu(uId: result?.uid.toString())));
+                        builder: (context) => HiddenDrowerMenu()));
               }
             } catch (e) {
               print(e.toString());

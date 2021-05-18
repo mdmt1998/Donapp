@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../repositories/globals/sharedPreferences/sharedPrefences.dart';
 import '../../repositories/profile/profileRepository.dart';
 import '../../repositories/auth/authRepository.dart';
 import '../../models/auth/userDataModel.dart';
@@ -10,10 +11,6 @@ import 'updateProfilePage.dart';
 import '../auth/loginPage.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String uId;
-
-  const ProfilePage({Key key, @required this.uId}) : super(key: key);
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -21,6 +18,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   AuthRepository _authRepository = AuthRepository();
   ProfileRepository _profileRepository = ProfileRepository();
+  SharedPreference _sharedPreference = SharedPreference();
   UserData _userData = UserData();
 
   bool _isloading = false;
@@ -31,11 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       await _profileRepository
-          .getUserData(widget.uId)
+          .getUserData(_sharedPreference.uId)
           .then((value) => setState(() => _userData = value));
 
       await _profileRepository
-          .getNodeValueByUId(widget.uId)
+          .getNodeValueByUId(_sharedPreference.uId)
           .then((value) => setState(() => _nodeValue = value));
     } catch (e) {
       print(e.toString());
@@ -47,6 +45,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
+    _sharedPreference.init();
+
     _getUserInformation();
   }
 
@@ -112,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ArticlesPublishedPage(uId: widget.uId)));
+                        ArticlesPublishedPage(uId: _sharedPreference.uId)));
           },
         );
 
@@ -132,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ArticlesObtainedPage(uId: widget.uId)));
+                        ArticlesObtainedPage(uId: _sharedPreference.uId)));
           },
         );
 

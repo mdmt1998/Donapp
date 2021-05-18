@@ -5,10 +5,6 @@ import '../pages/home/homePage.dart';
 import '../pages/profile/profilePage.dart';
 
 class HiddenDrowerMenu extends StatefulWidget {
-  final String uId;
-
-  const HiddenDrowerMenu({Key key, this.uId}) : super(key: key);
-
   @override
   _HiddenDrowerMenuState createState() => _HiddenDrowerMenuState();
 }
@@ -36,7 +32,7 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
               TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 18.0),
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
         ),
-        ProfilePage(uId: widget.uId)));
+        ProfilePage()));
   }
 
   @override

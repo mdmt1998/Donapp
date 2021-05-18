@@ -145,11 +145,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               await _profileRepository.updateUserData(
                   userData, widget.nodeValue);
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          HiddenDrowerMenu(uId: widget.userData.uId)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
             } catch (e) {
               print(e.toString());
             }

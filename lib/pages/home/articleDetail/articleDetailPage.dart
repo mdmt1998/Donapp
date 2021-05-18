@@ -2,65 +2,73 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../widgets/buttonWidget.dart';
-import 'acquireArticlePage.dart';
-import 'donorContactPage.dart';
+import 'acquireArticle/acquireArticlePage.dart';
+import 'acquireArticle/donorContactMenuItemPage.dart';
 
 class ArticleDetailPage extends StatefulWidget {
+  final Map articleMap;
+
+  const ArticleDetailPage({Key key, @required this.articleMap})
+      : super(key: key);
+
   @override
   _ArticleDetailPageState createState() => _ArticleDetailPageState();
 }
 
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
-  PageController _pageController;
+  // PageController _pageController;
 
-  List<String> images;
+  // List<String> images;
 
-  String principalImage =
-      'https://billmes.com/706-large_default/silla-de-ruedas-standard.jpg';
-  String articleName = 'Nashville armchair';
-  String articleDescription =
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make ';
+  String _principalImage;
+  String _articleName;
+  String _articleDescription;
+  String _uId;
 
-  _cardPictureSlider(int index) => AnimatedBuilder(
-        animation: _pageController,
-        builder: (BuildContext context, Widget widget) {
-          double value = 1;
-          if (_pageController.position.haveDimensions) {
-            value = _pageController.page - index;
-            value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
-          }
-          return Center(
-              child: SizedBox(
-                  height: Curves.easeInOut.transform(value) * 270.0,
-                  width: Curves.easeInOut.transform(value) * 400.0,
-                  child: Card(
-                      elevation: 3,
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(images[index])))));
-        },
-      );
+  // _cardPictureSlider(int index) => AnimatedBuilder(
+  //       animation: _pageController,
+  //       builder: (BuildContext context, Widget widget) {
+  //         double value = 1;
+  //         if (_pageController.position.haveDimensions) {
+  //           value = _pageController.page - index;
+  //           value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
+  //         }
+  //         return Center(
+  //             child: SizedBox(
+  //                 height: Curves.easeInOut.transform(value) * 270.0,
+  //                 width: Curves.easeInOut.transform(value) * 400.0,
+  //                 child: Card(
+  //                     elevation: 3,
+  //                     child: Padding(
+  //                         padding: const EdgeInsets.all(8.0),
+  //                         child: Image.network(images[index])))));
+  //       },
+  //     );
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 1, viewportFraction: 0.25);
+    // _pageController = PageController(initialPage: 1, viewportFraction: 0.25);
+    // images = [
+    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657563.svg',
+    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657361.svg',
+    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
+    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657563.svg',
+    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657361.svg',
+    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
+    // ];
 
-    images = [
-      'https://www.flaticon.es/premium-icon/icons/svg/657/657563.svg',
-      'https://www.flaticon.es/premium-icon/icons/svg/657/657361.svg',
-      'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
-      'https://www.flaticon.es/premium-icon/icons/svg/657/657563.svg',
-      'https://www.flaticon.es/premium-icon/icons/svg/657/657361.svg',
-      'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
-    ];
+    _uId = widget.articleMap['uId'];
+    _principalImage = widget.articleMap['url'];
+    _articleName = widget.articleMap['articleName'];
+    _articleDescription = widget.articleMap['description'];
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _pageController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +95,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                     height: _screenSizeWidth / 2,
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
-                      image: '$principalImage',
+                      image: '$_principalImage',
                       fit: BoxFit.scaleDown,
                       placeholderCacheWidth: 100,
                       alignment: Alignment.topCenter,
@@ -95,16 +103,16 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
               ])),
         );
 
-    Widget _picturesCarousel() => Container(
-          // padding: EdgeInsets.only(left: _screenSizeWidth / 20),
-          height: _screenSizeWidth / 6,
-          child: PageView.builder(
-            controller: _pageController,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (_, int index) => _cardPictureSlider(index),
-            itemCount: images.length,
-          ),
-        );
+    // Widget _picturesCarousel() => Container(
+    //       // padding: EdgeInsets.only(left: _screenSizeWidth / 20),
+    //       height: _screenSizeWidth / 6,
+    //       child: PageView.builder(
+    //         controller: _pageController,
+    //         physics: BouncingScrollPhysics(),
+    //         itemBuilder: (_, int index) => _cardPictureSlider(index),
+    //         itemCount: images.length,
+    //       ),
+    //     );
 
     Widget _descriptionContainer() => Container(
           height: _screenSizeWidth / 2,
@@ -119,11 +127,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('$articleName',
+                    Text('$_articleName',
                         style: TextStyle(
                             fontSize: _fontScaling / 0.05,
                             color: Theme.of(context).primaryColor)),
-                    Text('$articleDescription', textAlign: TextAlign.center)
+                    Text('$_articleDescription', textAlign: TextAlign.center)
                   ])),
         );
 
@@ -135,9 +143,10 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => AcquireArticlePage(
-                        articleName: articleName,
-                        articleDescription: articleDescription,
-                        principalImage: principalImage)));
+                        articleName: _articleName,
+                        articleDescription: _articleDescription,
+                        principalImage: _principalImage,
+                        articleUId: _uId)));
           },
         );
 
@@ -165,17 +174,17 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DonorContactPage()));
+                                    builder: (context) =>
+                                        DonorContactPage(articleUId: _uId)));
                           } else if (choice == PopupMenuButtonItem.ACQUIRE) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AcquireArticlePage(
-                                          articleName: articleName,
-                                          articleDescription:
-                                              articleDescription,
-                                          principalImage: principalImage,
-                                        )));
+                                        articleName: _articleName,
+                                        articleDescription: _articleDescription,
+                                        principalImage: _principalImage,
+                                        articleUId: _uId)));
                           }
                         },
                         itemBuilder: (BuildContext context) =>
@@ -195,8 +204,8 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                         child: Column(children: [
                       SizedBox(height: _screenSizeWidth / 20),
                       _principalPictureContainer(),
-                      SizedBox(height: _screenSizeWidth / 13),
-                      _picturesCarousel(),
+                      // SizedBox(height: _screenSizeWidth / 13),
+                      // _picturesCarousel(),
                       SizedBox(height: _screenSizeWidth / 9),
                       _descriptionContainer(),
                       SizedBox(height: _screenSizeWidth / 9),

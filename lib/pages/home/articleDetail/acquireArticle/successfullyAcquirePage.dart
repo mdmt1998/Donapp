@@ -1,17 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../widgets/buttonWidget.dart';
-import '../../../widgets/hiddenDrawerMenu.dart';
+import '../../../../repositories/profile/profileRepository.dart';
+import '../../../../models/auth/userDataModel.dart';
+import '../../../../widgets/hiddenDrawerMenu.dart';
+import '../../../../widgets/buttonWidget.dart';
 
 class SuccessfullyAcquirePage extends StatefulWidget {
+  final String articleUId;
+
+  const SuccessfullyAcquirePage({Key key, @required this.articleUId})
+      : super(key: key);
+
   @override
   _SuccessfullyAcquirePageState createState() =>
       _SuccessfullyAcquirePageState();
 }
 
 class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
+  ProfileRepository _profileRepository = ProfileRepository();
+  UserData _contactData = UserData();
+
   bool isExpanding = true;
+  bool _isloading = false;
+
+  _getContactInformation() async {
+    setState(() => _isloading = true);
+
+    await _profileRepository
+        .getUserData(widget.articleUId)
+        .then((value) => setState(() => _contactData = value));
+
+    setState(() => _isloading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _getContactInformation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,22 +71,22 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
                             fontSize: _fontScaling / 0.04,
                             color: Theme.of(context).primaryColor)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text('Nombre Apellido',
+                    Text(_contactData?.name,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text('Dirección',
+                    Text(_contactData.address,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 65),
-                    Text('Ciudad',
+                    Text(_contactData?.city,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text('correo@correo.com',
+                    Text(_contactData?.email,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 65),
-                    Text('000 000 0000',
+                    Text('(+57) ${_contactData?.phoneNumber}',
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text('idAdq.: 1234',
+                    Text('idAdq.: 1234', // TODO: Implement transaction id
                         style: TextStyle(fontSize: _fontScaling / 0.08)),
                   ],
                 )),
@@ -82,28 +110,30 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
       color: Colors.white,
       child: SafeArea(
         bottom: false,
-        child: Scaffold(
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: _screenSizeWidth / 20,
-            ),
-            child: SingleChildScrollView(
-                child: Column(
-              children: [
-                SizedBox(height: _screenSizeWidth / 5),
-                SvgPicture.asset('assets/newProduct.svg',
-                    fit: BoxFit.cover, height: _screenSizeWidth / 2.2),
-                SizedBox(height: _screenSizeWidth / 10),
-                _titleText(),
-                SizedBox(height: _screenSizeWidth / 8),
-                _contact(),
-                SizedBox(height: _screenSizeWidth / 5),
-                _finishButton(),
-                SizedBox(height: _screenSizeWidth / 5),
-              ],
-            )),
-          ),
-        ),
+        child: _isloading
+            ? Center(child: CircularProgressIndicator())
+            : Scaffold(
+                body: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: _screenSizeWidth / 20,
+                  ),
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      SizedBox(height: _screenSizeWidth / 5),
+                      SvgPicture.asset('assets/newProduct.svg',
+                          fit: BoxFit.cover, height: _screenSizeWidth / 2.2),
+                      SizedBox(height: _screenSizeWidth / 10),
+                      _titleText(),
+                      SizedBox(height: _screenSizeWidth / 8),
+                      _contact(),
+                      SizedBox(height: _screenSizeWidth / 5),
+                      _finishButton(),
+                      SizedBox(height: _screenSizeWidth / 5),
+                    ],
+                  )),
+                ),
+              ),
       ),
     );
   }

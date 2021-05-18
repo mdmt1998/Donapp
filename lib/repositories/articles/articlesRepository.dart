@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../models/articles/articleModel.dart';
 import '../../models/articles/imageModel.dart';
-import '../constants/constants.dart';
+import '../globals/constants/constants.dart';
 
 class ArticlesRepository {
   final FirebaseDatabase _database = FirebaseDatabase.instance;

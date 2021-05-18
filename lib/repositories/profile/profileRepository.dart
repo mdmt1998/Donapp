@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../../models/auth/userDataModel.dart';
-import '../constants/constants.dart';
+import '../globals/constants/constants.dart';
 
 class ProfileRepository {
   final FirebaseDatabase _database = FirebaseDatabase.instance;

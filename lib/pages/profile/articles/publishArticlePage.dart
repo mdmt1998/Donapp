@@ -63,9 +63,7 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
     await _articlesRepository.postArticle(image, widget.uId);
 
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HiddenDrowerMenu(uId: widget.uId)));
+        context, MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
 
     setState(() => _isloading = false);
   }

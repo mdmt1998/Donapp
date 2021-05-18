@@ -197,8 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            HiddenDrowerMenu(uId: result?.uid.toString())));
+                        builder: (context) => HiddenDrowerMenu()));
               }
 
               setState(() => _isloading = false);

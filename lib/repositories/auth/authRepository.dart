@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import '../globals/sharedPreferences/sharedPrefences.dart';
 import '../../models/auth/userDataModel.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseDatabase _database = FirebaseDatabase.instance;
+
+  SharedPreference _sharedPreference = SharedPreference();
 
   // // create user obj based on firebase User
   // UserModel _userFromFirebaseUser(User firebaseUser) {
@@ -22,6 +25,12 @@ class AuthRepository {
           email: email, password: password);
 
       print('${user.additionalUserInfo}');
+
+      _sharedPreference
+        ..isLogged = true
+        ..uId = user?.user?.uid.toString()
+        ..savePreference();
+
       return user.user;
     } on FirebaseAuthException catch (e) {
       print(e.toString());
@@ -31,6 +40,37 @@ class AuthRepository {
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
+    }
+  }
+
+  Future registerEmailAndPassword(String email, String password) async {
+    try {
+      var user = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      //     _database. .database().ref('users/' + user.uid).set({
+      //     firstName: firstName,
+      //     lastName: lastNames
+      // })
+
+      print('Registered ${user.user}');
+
+      _sharedPreference
+        ..isLogged = true
+        ..uId = user?.user?.uid.toString()
+        ..savePreference();
+
+      return user.user;
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -54,37 +94,17 @@ class AuthRepository {
     }
   }
 
-  Future registerEmailAndPassword(String email, String password) async {
-    try {
-      var user = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
-      //     _database. .database().ref('users/' + user.uid).set({
-      //     firstName: firstName,
-      //     lastName: lastNames
-      // })
-
-      print('Registered ${user.user}');
-      return user.user;
-    } on FirebaseAuthException catch (e) {
-      print(e.toString());
-
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   Future currentUser() async {
     User user = _firebaseAuth.currentUser;
     return user.uid;
   }
 
   Future<void> signOut() async {
+    _sharedPreference
+      ..uId = null
+      ..isLogged = false
+      ..deletePreference();
+
     return await _firebaseAuth.signOut();
   }
 

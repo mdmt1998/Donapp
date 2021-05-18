@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../../widgets/buttonWidget.dart';
+import '../../../../widgets/buttonWidget.dart';
 import 'successfullyAcquirePage.dart';
 
 class AcquireArticlePage extends StatefulWidget {
   final String articleName;
   final String articleDescription;
   final String principalImage;
+  final String articleUId;
 
   const AcquireArticlePage(
       {Key key,
       @required this.articleName,
       @required this.articleDescription,
-      @required this.principalImage})
+      @required this.principalImage,
+      @required this.articleUId})
       : super(key: key);
 
   @override
@@ -69,7 +71,8 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SuccessfullyAcquirePage()));
+                    builder: (context) => SuccessfullyAcquirePage(
+                        articleUId: widget.articleUId)));
           },
         );
 
@@ -100,7 +103,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                 _titleText(),
                 SizedBox(height: _screenSizeWidth / 8),
                 _description(),
-                SizedBox(height: _screenSizeWidth / 2),
+                SizedBox(height: _screenSizeWidth / 8),
                 _nextButton(),
                 SizedBox(height: _screenSizeWidth / 8)
               ],
