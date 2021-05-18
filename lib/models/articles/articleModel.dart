@@ -1,14 +1,14 @@
 class ArticleModel {
   String url;
-  String imageName;
+  String articleName;
   String description;
   String uId;
 
-  ArticleModel({this.url, this.imageName, this.description, this.uId});
+  ArticleModel({this.url, this.articleName, this.description, this.uId});
 
   ArticleModel.fromJson(Map<String, dynamic> json) {
     url = json['url'];
-    imageName = json['imageName'];
+    articleName = json['articleName'];
     description = json['description'];
     uId = json['uId'];
   }
@@ -16,7 +16,7 @@ class ArticleModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['url'] = this.url;
-    data['imageName'] = this.imageName;
+    data['articleName'] = this.articleName;
     data['description'] = this.description;
     data['uId'] = this.uId;
     return data;

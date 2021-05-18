@@ -12,7 +12,7 @@ class ArticlesRepository {
     try {
       TaskSnapshot taskSnapshot = await _storage
           .ref()
-          .child('articlesImg/${image.imageName}')
+          .child('articlesImg/${image.articleName}')
           .putFile(image.file);
 
       if (taskSnapshot.state == TaskState.success) {
@@ -21,7 +21,7 @@ class ArticlesRepository {
         var article = ArticleModel(
             url: downloadUrl,
             description: image.description,
-            imageName: image.imageName,
+            articleName: image.articleName,
             uId: uId);
 
         await _database

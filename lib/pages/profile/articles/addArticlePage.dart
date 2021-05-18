@@ -58,7 +58,7 @@ class _AddArticlePageState extends State<AddArticlePage> {
     var image = ImageModel(
         file: file,
         description: _descriptionController.text,
-        imageName: _articleNameController.text);
+        articleName: _articleNameController.text);
 
     await _articlesRepository.postArticle(image, widget.uId);
 
