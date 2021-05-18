@@ -13,10 +13,16 @@ class _HomePageState extends State<HomePage> {
 
   List _articlesList;
 
+  bool _isloading = false;
+
   _getArticles() async {
+    setState(() => _isloading = true);
+
     await _articlesRepository
         .getAllArticles()
         .then((value) => setState(() => _articlesList = value));
+
+    setState(() => _isloading = false);
   }
 
   @override
@@ -29,9 +35,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: ArticlesGridViewWidget(articlesList: _articlesList),
-    ));
+    return _isloading
+        ? Center(child: CircularProgressIndicator())
+        : Scaffold(
+            body: Center(
+            child: ArticlesGridViewWidget(articlesList: _articlesList),
+          ));
   }
 }

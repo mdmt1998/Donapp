@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../models/articles/articleModel.dart';
 import '../../models/articles/imageModel.dart';
+import '../constants/constants.dart';
 
 class ArticlesRepository {
   final FirebaseDatabase _database = FirebaseDatabase.instance;
@@ -12,7 +13,7 @@ class ArticlesRepository {
     try {
       TaskSnapshot taskSnapshot = await _storage
           .ref()
-          .child('articlesImg/${image.articleName}')
+          .child('${DatabaseChild.articles_Img}/${image.articleName}')
           .putFile(image.file);
 
       if (taskSnapshot.state == TaskState.success) {
@@ -26,7 +27,7 @@ class ArticlesRepository {
 
         await _database
             .reference()
-            .child('Article')
+            .child(DatabaseChild.article)
             .push()
             .set(article.toJson());
       } else {
@@ -44,7 +45,11 @@ class ArticlesRepository {
     var list = [];
 
     try {
-      await _database.reference().child('Article').once().then((resp) {
+      await _database
+          .reference()
+          .child(DatabaseChild.article)
+          .once()
+          .then((resp) {
         Map<dynamic, dynamic> values = resp.value;
 
         values.forEach((key, values) => list.add(values));
@@ -58,11 +63,34 @@ class ArticlesRepository {
     return list;
   }
 
-  Future getArticleByNodeValue() async {}
+  // Future getArticleByNodeValue() async {}
+  // TODO: Acquire articles
 
   Future getObtainedArticleByUid() async {}
 
-  Future getPublishedArticleByUid() async {}
+  Future getPublishedArticlesByUid(String uId) async {
+    var list = [];
+
+    try {
+      await _database
+          .reference()
+          .child(DatabaseChild.article) // node
+          .orderByChild(DatabaseChild.uId) // property
+          .equalTo(uId)
+          .once()
+          .then((snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+
+        values.forEach((key, values) => list.add(values));
+      });
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return list;
+  }
 
 /**
     try {} on FirebaseException catch (e) {

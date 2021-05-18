@@ -131,7 +131,8 @@ class _ProfilePageState extends State<ProfilePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ArticlesObtainedPage()));
+                    builder: (context) =>
+                        ArticlesObtainedPage(uId: widget.uId)));
           },
         );
 

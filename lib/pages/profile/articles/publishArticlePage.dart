@@ -10,16 +10,16 @@ import '../../../models/articles/imageModel.dart';
 import '../../../widgets/hiddenDrawerMenu.dart';
 import '../../../widgets/buttonWidget.dart';
 
-class AddArticlePage extends StatefulWidget {
+class PublishArticlePage extends StatefulWidget {
   final String uId;
 
-  const AddArticlePage({Key key, @required this.uId}) : super(key: key);
+  const PublishArticlePage({Key key, @required this.uId}) : super(key: key);
 
   @override
-  _AddArticlePageState createState() => _AddArticlePageState();
+  _PublishArticlePageState createState() => _PublishArticlePageState();
 }
 
-class _AddArticlePageState extends State<AddArticlePage> {
+class _PublishArticlePageState extends State<PublishArticlePage> {
   final _formKey = GlobalKey<FormState>();
 
   ArticlesRepository _articlesRepository = ArticlesRepository();

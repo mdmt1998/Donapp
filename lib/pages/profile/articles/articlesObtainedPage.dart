@@ -4,11 +4,24 @@ import 'package:transparent_image/transparent_image.dart';
 import 'articleDescriptionPage.dart';
 
 class ArticlesObtainedPage extends StatefulWidget {
+  final String uId;
+
+  const ArticlesObtainedPage({Key key, @required this.uId}) : super(key: key);
+
   @override
   _ArticlesObtainedPageState createState() => _ArticlesObtainedPageState();
 }
 
 class _ArticlesObtainedPageState extends State<ArticlesObtainedPage> {
+  List _articlesList;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _articlesList = [];
+  }
+
   @override
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
@@ -32,7 +45,12 @@ class _ArticlesObtainedPageState extends State<ArticlesObtainedPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ArticleDescriptionPage()));
+                              builder: (context) => ArticleDescriptionPage(
+                                  uId: widget.uId,
+                                  // articleIndex: 0,
+                                  articleMap: _articlesList[0]
+                                  // TODO: Obtain articles
+                              )));
                     },
                     child: ListTile(
                       title: Text('Nashville armchair'),
