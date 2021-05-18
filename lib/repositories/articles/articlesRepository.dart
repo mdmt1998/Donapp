@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../models/articles/acquireArticleModel.dart';
 import '../../models/articles/articleModel.dart';
 import '../../models/articles/imageModel.dart';
 import '../globals/constants/constants.dart';
@@ -23,11 +24,18 @@ class ArticlesRepository {
             url: downloadUrl,
             description: image.description,
             articleName: image.articleName,
+            contactUId: uId,
             uId: uId);
 
         await _database
             .reference()
-            .child(DatabaseChild.article)
+            .child(DatabaseChild.available_articles)
+            .push()
+            .set(article.toJson());
+
+        await _database
+            .reference()
+            .child(DatabaseChild.published_articles)
             .push()
             .set(article.toJson());
       } else {
@@ -47,7 +55,7 @@ class ArticlesRepository {
     try {
       await _database
           .reference()
-          .child(DatabaseChild.article)
+          .child(DatabaseChild.available_articles)
           .once()
           .then((resp) {
         Map<dynamic, dynamic> values = resp.value;
@@ -63,18 +71,34 @@ class ArticlesRepository {
     return list;
   }
 
-  // Future getArticleByNodeValue() async {}
-  // TODO: Acquire articles
+  Future postAcquireArticle(AcquireArticleModel article) async {
+    try {
+      var node = await _getPublishedArticleNodeValueByUId(article.url);
 
-  Future getObtainedArticleByUid() async {}
+      await _database
+          .reference()
+          .child(DatabaseChild.acquired_articles)
+          .push()
+          .set(article.toJson());
 
-  Future getPublishedArticlesByUid(String uId) async {
+      await _database
+          .reference()
+          .child('${DatabaseChild.available_articles}/$node')
+          .remove();
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future getObtainedArticleByUid(String uId) async {
     var list = [];
 
     try {
       await _database
           .reference()
-          .child(DatabaseChild.article) // node
+          .child(DatabaseChild.acquired_articles) // node
           .orderByChild(DatabaseChild.uId) // property
           .equalTo(uId)
           .once()
@@ -92,11 +116,52 @@ class ArticlesRepository {
     return list;
   }
 
-/**
-    try {} on FirebaseException catch (e) {
-    print(e.toString());
+  Future getPublishedArticlesByUid(String uId) async {
+    var list = [];
+
+    try {
+      await _database
+          .reference()
+          .child(DatabaseChild.published_articles) // node
+          .orderByChild(DatabaseChild.uId) // property
+          .equalTo(uId)
+          .once()
+          .then((snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+
+        values.forEach((key, values) => list.add(values));
+      });
+    } on FirebaseException catch (e) {
+      print(e.toString());
     } catch (e) {
-    print(e.toString());
+      print(e.toString());
     }
- */
+
+    return list;
+  }
+
+  _getPublishedArticleNodeValueByUId(String url) async {
+    try {
+      var data = await _database
+          .reference()
+          .child(DatabaseChild.available_articles) // node
+          .orderByChild(DatabaseChild.url) // property
+          .equalTo(url)
+          .once()
+          .then((DataSnapshot snapshot) {
+        final value = snapshot.value as Map;
+
+        return value.keys
+            .toString()
+            .replaceFirst('(', '')
+            .replaceFirst(')', '');
+      });
+
+      return data;
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

@@ -7,9 +7,9 @@ import '../../../../widgets/hiddenDrawerMenu.dart';
 import '../../../../widgets/buttonWidget.dart';
 
 class SuccessfullyAcquirePage extends StatefulWidget {
-  final String articleUId;
+  final String contactUId;
 
-  const SuccessfullyAcquirePage({Key key, @required this.articleUId})
+  const SuccessfullyAcquirePage({Key key, @required this.contactUId})
       : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
     setState(() => _isloading = true);
 
     await _profileRepository
-        .getUserData(widget.articleUId)
+        .getUserData(widget.contactUId)
         .then((value) => setState(() => _contactData = value));
 
     setState(() => _isloading = false);
@@ -85,9 +85,10 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
                     SizedBox(height: _screenSizeWidth / 65),
                     Text('(+57) ${_contactData?.phoneNumber}',
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
-                    SizedBox(height: _screenSizeWidth / 15),
-                    Text('idAdq.: 1234', // TODO: Implement transaction id
-                        style: TextStyle(fontSize: _fontScaling / 0.08)),
+                    // TODO: Implement transaction id
+                    // SizedBox(height: _screenSizeWidth / 15),
+                    // Text('idAdq.: 1234',
+                    //     style: TextStyle(fontSize: _fontScaling / 0.08)),
                   ],
                 )),
           ),

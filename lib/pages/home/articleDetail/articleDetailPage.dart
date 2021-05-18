@@ -23,7 +23,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   String _principalImage;
   String _articleName;
   String _articleDescription;
-  String _uId;
+  String _contactUId;
 
   // _cardPictureSlider(int index) => AnimatedBuilder(
   //       animation: _pageController,
@@ -58,7 +58,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
     //   'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
     // ];
 
-    _uId = widget.articleMap['uId'];
+    _contactUId = widget.articleMap['contactUId'];
     _principalImage = widget.articleMap['url'];
     _articleName = widget.articleMap['articleName'];
     _articleDescription = widget.articleMap['description'];
@@ -142,11 +142,8 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AcquireArticlePage(
-                        articleName: _articleName,
-                        articleDescription: _articleDescription,
-                        principalImage: _principalImage,
-                        articleUId: _uId)));
+                    builder: (context) =>
+                        AcquireArticlePage(articleMap: widget.articleMap)));
           },
         );
 
@@ -174,17 +171,14 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        DonorContactPage(articleUId: _uId)));
+                                    builder: (context) => DonorContactPage(
+                                        contactUId: _contactUId)));
                           } else if (choice == PopupMenuButtonItem.ACQUIRE) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AcquireArticlePage(
-                                        articleName: _articleName,
-                                        articleDescription: _articleDescription,
-                                        principalImage: _principalImage,
-                                        articleUId: _uId)));
+                                        articleMap: widget.articleMap)));
                           }
                         },
                         itemBuilder: (BuildContext context) =>

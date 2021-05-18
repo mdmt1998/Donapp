@@ -5,11 +5,9 @@ import '../../../repositories/profile/profileRepository.dart';
 import '../../../models/auth/userDataModel.dart';
 
 class ArticleDescriptionPage extends StatefulWidget {
-  final String uId;
   final Map articleMap;
 
-  const ArticleDescriptionPage(
-      {Key key, @required this.uId, @required this.articleMap})
+  const ArticleDescriptionPage({Key key, @required this.articleMap})
       : super(key: key);
 
   @override
@@ -26,7 +24,7 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
     setState(() => _isloading = true);
 
     await _profileRepository
-        .getUserData(widget.uId)
+        .getUserData(widget.articleMap['contactUId'])
         .then((value) => setState(() => _contactData = value));
 
     setState(() => _isloading = false);
@@ -80,23 +78,24 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
                             fontSize: _fontScaling / 0.04,
                             color: Theme.of(context).primaryColor)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text(_contactData.name,
+                    Text(_contactData?.name,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text(_contactData.address,
+                    Text(_contactData?.address,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 65),
-                    Text(_contactData.city,
+                    Text(_contactData?.city,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 15),
-                    Text(_contactData.email,
+                    Text(_contactData?.email,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 65),
-                    Text('(+57) ${_contactData.phoneNumber}',
+                    Text('(+57) ${_contactData?.phoneNumber}',
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
-                    SizedBox(height: _screenSizeWidth / 15),
-                    Text('idReg.: 000', // TODO: Implement transaction id
-                        style: TextStyle(fontSize: _fontScaling / 0.08)),
+                    // TODO: Implement transaction id
+                    // SizedBox(height: _screenSizeWidth / 15),
+                    // Text('idReg.: 000',
+                    //     style: TextStyle(fontSize: _fontScaling / 0.08)),
                   ],
                 )),
           ),

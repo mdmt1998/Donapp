@@ -1,18 +1,18 @@
-class ArticleModel {
+class AcquireArticleModel {
   String url;
   String articleName;
   String description;
   String contactUId;
   String uId;
 
-  ArticleModel(
+  AcquireArticleModel(
       {this.url,
       this.articleName,
       this.description,
       this.contactUId,
       this.uId});
 
-  ArticleModel.fromJson(Map<String, dynamic> json) {
+  AcquireArticleModel.fromJson(Map<String, dynamic> json) {
     url = json['url'];
     articleName = json['articleName'];
     description = json['description'];

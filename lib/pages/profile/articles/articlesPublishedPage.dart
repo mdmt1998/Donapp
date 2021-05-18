@@ -88,7 +88,6 @@ class _ArticlesPublishedPageState extends State<ArticlesPublishedPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ArticleDescriptionPage(
-                                    uId: widget.uId,
                                     articleMap: _articlesList[index])));
                       },
                       child: ListTile(

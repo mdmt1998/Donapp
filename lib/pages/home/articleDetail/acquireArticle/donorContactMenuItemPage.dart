@@ -5,9 +5,10 @@ import '../../../../repositories/profile/profileRepository.dart';
 import '../../../../models/auth/userDataModel.dart';
 
 class DonorContactPage extends StatefulWidget {
-  final String articleUId;
+  final String contactUId;
 
-  const DonorContactPage({Key key, @required this.articleUId}) : super(key: key);
+  const DonorContactPage({Key key, @required this.contactUId})
+      : super(key: key);
 
   @override
   _DonorContactPageState createState() => _DonorContactPageState();
@@ -23,7 +24,7 @@ class _DonorContactPageState extends State<DonorContactPage> {
     setState(() => _isloading = true);
 
     await _profileRepository
-        .getUserData(widget.articleUId)
+        .getUserData(widget.contactUId)
         .then((value) => setState(() => _contactData = value));
 
     setState(() => _isloading = false);

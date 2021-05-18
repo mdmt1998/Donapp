@@ -20,6 +20,8 @@ class AuthRepository {
   // }
 
   Future signIn(String email, String password) async {
+    _sharedPreference.init();
+
     try {
       var user = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -44,6 +46,8 @@ class AuthRepository {
   }
 
   Future registerEmailAndPassword(String email, String password) async {
+    _sharedPreference.init();
+
     try {
       var user = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
