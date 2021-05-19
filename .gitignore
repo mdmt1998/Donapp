@@ -37,7 +37,7 @@ lib/generated_plugin_registrant.dart
 app.*.symbols
 
 # Android Signing
-**/android/key.properties
+android/key.properties
 
 # Obfuscation related
 app.*.map.json
