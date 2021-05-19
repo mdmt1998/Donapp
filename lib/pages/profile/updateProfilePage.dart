@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../repositories/globals/constants/constants.dart';
 import '../../repositories/profile/profileRepository.dart';
 import '../../widgets/textFormFieldWidget.dart';
 import '../../models/auth/userDataModel.dart';
@@ -60,6 +61,32 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
+
+    Widget _buildPopupDialog(String body, bool success) => AlertDialog(
+          title: Text('Actualizar perfil'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(body),
+            ],
+          ),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              textColor: Theme.of(context).primaryColor,
+              onPressed: () {
+                if (success) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                      (Route<dynamic> route) => false);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
 
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
@@ -132,24 +159,30 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
             // if (!_formKey.currentState.validate()) return;
 
-            try {
-              var userData = UserData(
-                  uId: widget.userData.uId,
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  name: _nameController.text,
-                  address: _addressController.text,
-                  phoneNumber: int.tryParse(_phoneController.text),
-                  city: _cityController.text);
+            var userData = UserData(
+                uId: widget.userData.uId,
+                email: _emailController.text,
+                password: _passwordController.text,
+                name: _nameController.text,
+                address: _addressController.text,
+                phoneNumber: int.tryParse(_phoneController.text),
+                city: _cityController.text);
 
-              await _profileRepository.updateUserData(
-                  userData, widget.nodeValue);
+            var resp = await _profileRepository.updateUserData(
+                userData, widget.nodeValue);
 
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
-            } catch (e) {
-              print(e.toString());
+            if (resp == Response.success) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog(
+                      'Se ha actualizado el perfil correctamente', true));
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog(
+                      'Algo salió mal!, por favor, revise los campos', false));
             }
+
             setState(() => _isloading = false);
           },
         );

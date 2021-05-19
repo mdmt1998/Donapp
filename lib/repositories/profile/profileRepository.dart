@@ -63,6 +63,8 @@ class ProfileRepository {
           .child(DatabaseChild.user)
           .child(nodeValue)
           .update(data.toJson());
+
+      return Response.success;
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     } catch (e) {

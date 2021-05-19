@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../../repositories/globals/sharedPreferences/sharedPrefences.dart';
+import '../../../../repositories/globals/constants/constants.dart';
 import '../../../../repositories/articles/articlesRepository.dart';
 import '../../../../models/articles/acquireArticleModel.dart';
 import '../../../../widgets/buttonWidget.dart';
@@ -24,8 +25,6 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
   bool _isloading = false;
 
   _acquireArticle() async {
-    setState(() => _isloading = true);
-
     var article = AcquireArticleModel(
         url: widget.articleMap['url'],
         description: widget.articleMap['description'],
@@ -33,9 +32,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
         contactUId: widget.articleMap['contactUId'],
         uId: _sharedPreference.uId);
 
-    await _articlesRepository.postAcquireArticle(article);
-
-    setState(() => _isloading = false);
+    return await _articlesRepository.postAcquireArticle(article);
   }
 
   @override
@@ -49,6 +46,24 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
+
+    Widget _buildPopupDialog() => AlertDialog(
+          title: Text('Adquirir artículo'),
+          content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Lo sentimos!. Algo salió mal'),
+              ]),
+          actions: [
+            FlatButton(
+                child: Text('Ok'),
+                textColor: Theme.of(context).primaryColor,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                })
+          ],
+        );
 
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
@@ -90,13 +105,23 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
           buttonText: 'Siguiente',
           elevation: 5.0,
           onPressed: () async {
-            await _acquireArticle();
+            setState(() => _isloading = true);
 
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SuccessfullyAcquirePage(
-                        contactUId: widget.articleMap['contactUId'])));
+            var resp = await _acquireArticle();
+
+            if (resp != Response.success) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog());
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SuccessfullyAcquirePage(
+                          contactUId: widget.articleMap['contactUId'])));
+            }
+
+            setState(() => _isloading = false);
           },
         );
 

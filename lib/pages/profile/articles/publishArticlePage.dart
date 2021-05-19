@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../repositories/articles/articlesRepository.dart';
+import '../../../repositories/globals/constants/constants.dart';
 import '../../../widgets/textFormFieldWidget.dart';
 import '../../../models/articles/imageModel.dart';
 import '../../../widgets/hiddenDrawerMenu.dart';
@@ -45,8 +46,6 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
   }
 
   _postArticle(BuildContext context) async {
-    setState(() => _isloading = true);
-
     final Directory systemTempDir = Directory.systemTemp;
     final byteData = await rootBundle.load(_img);
     final file =
@@ -60,12 +59,7 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
         description: _descriptionController.text,
         articleName: _articleNameController.text);
 
-    await _articlesRepository.postArticle(image, widget.uId);
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
-
-    setState(() => _isloading = false);
+    return await _articlesRepository.postArticle(image, widget.uId);
   }
 
   @override
@@ -86,6 +80,32 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
+
+    Widget _buildPopupDialog(String body, bool success) => AlertDialog(
+          title: Text('publicar artículo'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(body),
+            ],
+          ),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              textColor: Theme.of(context).primaryColor,
+              onPressed: () {
+                if (success) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                      (Route<dynamic> route) => false);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
 
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
@@ -154,7 +174,23 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
           height: _screenSizeWidth / 11,
           width: _screenSizeWidth / 2.5,
           onPressed: () async {
-            await _postArticle(context);
+            setState(() => _isloading = true);
+
+            var resp = await _postArticle(context);
+
+            if (resp == Response.success) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog(
+                      'Se ha publicado el artículo correctamente', true));
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog(
+                      'Algo salió mal!, por favor, revise los campos', false));
+            }
+
+            setState(() => _isloading = false);
           },
         );
 

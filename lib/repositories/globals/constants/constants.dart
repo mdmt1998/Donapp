@@ -7,3 +7,7 @@ class DatabaseChild {
   static const articles_Img = 'articlesImg';
   static const acquired_articles = 'AcquiredArticles';
 }
+
+class Response{
+  static const success = 'success';
+}

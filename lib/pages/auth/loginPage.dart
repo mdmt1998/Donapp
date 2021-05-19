@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   Pattern _pattern;
 
   bool _isloading = false;
+  bool _showPassword = false;
 
   String _validateEmail(value) {
     _pattern =
@@ -73,6 +74,26 @@ class _LoginPageState extends State<LoginPage> {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
+    Widget _buildPopupDialog() => AlertDialog(
+          title: Text('Iniciar sesión'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Por favor, revise su usuario o contraseña'),
+            ],
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              textColor: Theme.of(context).primaryColor,
+              child: Text('Ok'),
+            ),
+          ],
+        );
+
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -92,11 +113,21 @@ class _LoginPageState extends State<LoginPage> {
                 validator: _validateEmail),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
-                hintText: 'Contraseña',
+                hintText: !_showPassword ? 'Contraseña' : '********',
                 controller: _passwordController,
                 textInputType: TextInputType.text,
                 autoValidateMode: AutovalidateMode.onUserInteraction,
-                validator: _validatePassword),
+                validator: _validatePassword,
+                obscureText: !_showPassword,
+                suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() => _showPassword = !_showPassword);
+                    },
+                    child: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off,
+                      size: _screenSizeWidth / 20,
+                      // color: Colors.grey
+                    ))),
           ]),
         );
 
@@ -115,33 +146,31 @@ class _LoginPageState extends State<LoginPage> {
           buttonText: 'Iniciar sesión',
           height: _screenSizeWidth / 11,
           width: _screenSizeWidth / 2.5,
-          elevation: 2,
+          elevation: 2.0,
           onPressed: () async {
             setState(() => _isloading = true);
 
             if (!_formKey.currentState.validate()) return;
 
-            try {
-              var result = await _authService.signIn(
-                  _emailController.text, _passwordController.text);
+            var result = await _authService.signIn(
+                _emailController.text, _passwordController.text);
 
-              print('============');
-              print(result);
-              print('============');
+            print('============');
+            print(result);
+            print('============');
 
-              if (result == null) {
-                print('error');
-              } else {
-                print('ENTRA');
-                print('${result?.uid}');
+            if (result == null) {
+              print('error');
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HiddenDrowerMenu()));
-              }
-            } catch (e) {
-              print(e.toString());
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog());
+            } else {
+              print('ENTRA');
+              print('${result?.uid}');
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
             }
             setState(() => _isloading = false);
           },

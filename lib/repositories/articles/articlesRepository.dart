@@ -38,6 +38,8 @@ class ArticlesRepository {
             .child(DatabaseChild.published_articles)
             .push()
             .set(article.toJson());
+
+        return Response.success;
       } else {
         print('Error from image repo ${taskSnapshot.state.toString()}');
         throw ('This file is not an image');
@@ -85,6 +87,8 @@ class ArticlesRepository {
           .reference()
           .child('${DatabaseChild.available_articles}/$node')
           .remove();
+
+      return Response.success;
     } on FirebaseException catch (e) {
       print(e.toString());
     } catch (e) {

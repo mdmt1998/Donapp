@@ -27,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Pattern _pattern;
 
   bool _isloading = false;
+  bool _showPassword = false;
 
   String _validateEmail(value) {
     _pattern =
@@ -92,6 +93,26 @@ class _RegisterPageState extends State<RegisterPage> {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
+    Widget _buildPopupDialog() => AlertDialog(
+          title: Text('Error al registrarse'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Por favor, revise los campos requeridos'),
+            ],
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              textColor: Theme.of(context).primaryColor,
+              child: Text('Ok'),
+            ),
+          ],
+        );
+
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -120,12 +141,21 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
-              hintText: 'Contraseña',
-              controller: _passwordController,
-              textInputType: TextInputType.text,
-              autoValidateMode: AutovalidateMode.onUserInteraction,
-              validator: _validatePassword,
-            ),
+                hintText: !_showPassword ? 'Contraseña' : '********',
+                controller: _passwordController,
+                textInputType: TextInputType.text,
+                autoValidateMode: AutovalidateMode.onUserInteraction,
+                validator: _validatePassword,
+                obscureText: !_showPassword,
+                suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() => _showPassword = !_showPassword);
+                    },
+                    child: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off,
+                      size: _screenSizeWidth / 20,
+                      // color: Colors.grey
+                    ))),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
               hintText: 'Ciudad',
@@ -161,49 +191,39 @@ class _RegisterPageState extends State<RegisterPage> {
           onPressed: () async {
             if (!_formKey.currentState.validate()) return;
 
-            try {
-              setState(() => _isloading = true);
+            setState(() => _isloading = true);
 
-              var result = await _authService.registerEmailAndPassword(
-                  _emailController.text, _passwordController.text);
+            var result = await _authService.registerEmailAndPassword(
+                _emailController.text, _passwordController.text);
 
-              print(result);
+            print(result);
 
-              if (result == null) {
-                print('error');
-              } else {
-                print('CREADA');
-                print('${result?.uid}');
+            if (result == null) {
+              print('error');
 
-                var userData = UserData(
-                    uId: result?.uid,
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    name: _nameController.text,
-                    address: _addressController.text,
-                    phoneNumber: int.tryParse(_phoneController.text),
-                    city: _cityController.text);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog());
+            } else {
+              print('CREADA');
+              print('${result?.uid}');
 
-                await _authService.registerUserData(userData
-                    // result.uid.toString(),
-                    // _emailController.text,
-                    // _passwordController.text,
-                    // _nameController.text,
-                    // _addressController.text,
-                    // int.tryParse(_phoneController.text),
-                    // _cityController.text
-                    );
+              var userData = UserData(
+                  uId: result?.uid,
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  name: _nameController.text,
+                  address: _addressController.text,
+                  phoneNumber: int.tryParse(_phoneController.text),
+                  city: _cityController.text);
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HiddenDrowerMenu()));
-              }
+              await _authService.registerUserData(userData);
 
-              setState(() => _isloading = false);
-            } catch (e) {
-              print(e.toString());
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
             }
+
+            setState(() => _isloading = false);
           },
         );
 

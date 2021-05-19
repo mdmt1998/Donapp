@@ -64,7 +64,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     final _screenWidth = MediaQuery.of(context).size.width;
 
     /**
-     * 
+     *
      */
     return TextFormField(
       focusNode: widget.focusNode,
@@ -116,6 +116,12 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey, width: 2.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red[600], width: 2.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red[600], width: 2.0),
         ),
       ),
     );
