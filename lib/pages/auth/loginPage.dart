@@ -1,10 +1,9 @@
-import 'package:donapp/repositories/globals/sharedPreferences/sharedPrefences.dart';
 import 'package:flutter/material.dart';
 
 import '../../repositories/auth/authRepository.dart';
-import '../../widgets/textFormFieldWidget.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/buttonWidget.dart';
+import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/textFormFieldWidget.dart';
 import 'registerPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -205,16 +204,18 @@ class _LoginPageState extends State<LoginPage> {
                             right: _screenSizeWidth / 15),
                         child: Stack(
                           children: [
-                            Column(
-                              children: [
-                                _titleText(),
-                                SizedBox(height: _screenSizeWidth / 15),
-                                _loginFields(),
-                                _createAccount(),
-                                SizedBox(height: _screenSizeWidth / 50),
-                                _loginButton(),
-                                SizedBox(height: _screenSizeWidth / 900),
-                              ],
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  _titleText(),
+                                  SizedBox(height: _screenSizeWidth / 15),
+                                  _loginFields(),
+                                  _createAccount(),
+                                  SizedBox(height: _screenSizeWidth / 50),
+                                  _loginButton(),
+                                  SizedBox(height: _screenSizeWidth / 900),
+                                ],
+                              ),
                             )
                           ],
                         ),

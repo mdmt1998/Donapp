@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
      *
      */
     return MaterialApp(
-      title: 'DonApp',
+      title: 'Donapp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color.fromRGBO(0, 93, 255, 1), // azul

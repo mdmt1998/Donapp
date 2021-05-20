@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,10 +47,12 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
   }
 
   _postArticle(BuildContext context) async {
-    final Directory systemTempDir = Directory.systemTemp;
+    // final Directory systemTempDir = Directory.systemTemp;
     final byteData = await rootBundle.load(_img);
-    final file =
-        File('${systemTempDir.path}/${_articleNameController.text}.jpeg');
+    // final file =
+    //     File('${systemTempDir.path}/${_articleNameController.text}.jpeg');
+
+    final file = _selectedPicture;
 
     await file.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
@@ -122,13 +125,15 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
               hintText: 'Nombre del artículo',
               controller: _articleNameController,
               textInputType: TextInputType.text,
+              textCapitalization: TextCapitalization.sentences,
             ),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
               hintText: 'Descripción',
               controller: _descriptionController,
               maxLines: 3,
-              textInputType: TextInputType.emailAddress,
+              textInputType: TextInputType.text,
+              textCapitalization: TextCapitalization.sentences,
             ),
             SizedBox(height: _screenSizeWidth / 20)
           ]),
