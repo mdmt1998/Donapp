@@ -70,7 +70,8 @@ class _ArticlesObtainedPageState extends State<ArticlesObtainedPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ArticleDescriptionPage(
-                                    articleMap: _articlesList[index])));
+                                    articleMap: _articlesList[index],
+                                    isPublished: false)));
                       },
                       child: ListTile(
                         title: Text(_articlesList[index]['articleName']),

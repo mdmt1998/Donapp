@@ -73,9 +73,36 @@ class ArticlesRepository {
     return list;
   }
 
+  Future deleteArticle(String url) async {
+    try {
+      var nodeAvailable = await _getPublishedArticleNodeValueByUId(
+          url, DatabaseChild.available_articles);
+
+      var nodePublished = await _getPublishedArticleNodeValueByUId(
+          url, DatabaseChild.published_articles);
+
+      await _database
+          .reference()
+          .child('${DatabaseChild.available_articles}/$nodeAvailable')
+          .remove();
+
+      await _database
+          .reference()
+          .child('${DatabaseChild.published_articles}/$nodePublished')
+          .remove();
+
+      return Response.success;
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future postAcquireArticle(AcquireArticleModel article) async {
     try {
-      var node = await _getPublishedArticleNodeValueByUId(article.url);
+      var node = await _getPublishedArticleNodeValueByUId(
+          article.url, DatabaseChild.available_articles);
 
       await _database
           .reference()
@@ -87,6 +114,22 @@ class ArticlesRepository {
           .reference()
           .child('${DatabaseChild.available_articles}/$node')
           .remove();
+
+      return Response.success;
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future postCancelTransaction(AcquireArticleModel article) async {
+    try {
+      await _database
+          .reference()
+          .child(DatabaseChild.canceled_transactions)
+          .push()
+          .set(article.toJson());
 
       return Response.success;
     } on FirebaseException catch (e) {
@@ -144,11 +187,11 @@ class ArticlesRepository {
     return list;
   }
 
-  _getPublishedArticleNodeValueByUId(String url) async {
+  _getPublishedArticleNodeValueByUId(String url, String child) async {
     try {
       var data = await _database
           .reference()
-          .child(DatabaseChild.available_articles) // node
+          .child(child) // node
           .orderByChild(DatabaseChild.url) // property
           .equalTo(url)
           .once()

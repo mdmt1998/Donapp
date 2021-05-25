@@ -5,6 +5,7 @@ import '../../../../repositories/globals/sharedPreferences/sharedPrefences.dart'
 import '../../../../repositories/globals/constants/constants.dart';
 import '../../../../repositories/articles/articlesRepository.dart';
 import '../../../../models/articles/acquireArticleModel.dart';
+import '../../../../widgets/hiddenDrawerMenu.dart';
 import '../../../../widgets/buttonWidget.dart';
 import 'successfullyAcquirePage.dart';
 
@@ -33,6 +34,17 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
         uId: _sharedPreference.uId);
 
     return await _articlesRepository.postAcquireArticle(article);
+  }
+
+  _cancelProcess() async {
+    var article = AcquireArticleModel(
+        url: widget.articleMap['url'],
+        description: widget.articleMap['description'],
+        articleName: widget.articleMap['articleName'],
+        contactUId: widget.articleMap['contactUId'],
+        uId: _sharedPreference.uId);
+
+    return await _articlesRepository.postCancelTransaction(article);
   }
 
   @override
@@ -101,29 +113,58 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
           ),
         );
 
-    Widget _nextButton() => ButtonWidget(
-          buttonText: 'Siguiente',
-          elevation: 5.0,
-          onPressed: () async {
-            setState(() => _isloading = true);
+    Widget _buttons() => Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ButtonWidget(
+                  width: _screenSizeWidth / 2.5,
+                  buttonText: 'Adquirir',
+                  elevation: 5.0,
+                  onPressed: () async {
+                    setState(() => _isloading = true);
 
-            var resp = await _acquireArticle();
+                    var resp = await _acquireArticle();
 
-            if (resp != Response.success) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) => _buildPopupDialog());
-            } else {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SuccessfullyAcquirePage(
-                          contactUId: widget.articleMap['contactUId'])));
-            }
+                    if (resp != Response.success) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _buildPopupDialog());
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuccessfullyAcquirePage(
+                                  contactUId:
+                                      widget.articleMap['contactUId'])));
+                    }
 
-            setState(() => _isloading = false);
-          },
-        );
+                    setState(() => _isloading = false);
+                  }),
+              ButtonWidget(
+                  width: _screenSizeWidth / 2.5,
+                  buttonText: 'Cancelar',
+                  elevation: 5.0,
+                  onPressed: () async {
+                    setState(() => _isloading = true);
+
+                    var resp = await _cancelProcess();
+
+                    if (resp != Response.success) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _buildPopupDialog());
+                    } else {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                          (Route<dynamic> route) => false);
+                    }
+
+                    setState(() => _isloading = false);
+                  })
+            ]);
 
     /**
      *
@@ -155,7 +196,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                       SizedBox(height: _screenSizeWidth / 8),
                       _description(),
                       SizedBox(height: _screenSizeWidth / 8),
-                      _nextButton(),
+                      _buttons(),
                       SizedBox(height: _screenSizeWidth / 8)
                     ],
                   )),

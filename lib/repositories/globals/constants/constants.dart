@@ -6,6 +6,7 @@ class DatabaseChild {
   static const published_articles = 'PublishedArticles';
   static const articles_Img = 'articlesImg';
   static const acquired_articles = 'AcquiredArticles';
+  static const canceled_transactions = 'CanceledTransactions';
 }
 
 class Response{

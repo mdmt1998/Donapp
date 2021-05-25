@@ -88,7 +88,8 @@ class _ArticlesPublishedPageState extends State<ArticlesPublishedPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ArticleDescriptionPage(
-                                    articleMap: _articlesList[index])));
+                                    articleMap: _articlesList[index],
+                                    isPublished: true)));
                       },
                       child: ListTile(
                         title: Text(_articlesList[index]['articleName']),

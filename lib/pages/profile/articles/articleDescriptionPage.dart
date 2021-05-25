@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../../repositories/globals/constants/constants.dart';
+import '../../../repositories/articles/articlesRepository.dart';
 import '../../../repositories/profile/profileRepository.dart';
 import '../../../models/auth/userDataModel.dart';
+import '../../../widgets/hiddenDrawerMenu.dart';
 
 class ArticleDescriptionPage extends StatefulWidget {
   final Map articleMap;
+  final bool isPublished;
 
-  const ArticleDescriptionPage({Key key, @required this.articleMap})
+  const ArticleDescriptionPage(
+      {Key key, @required this.articleMap, @required this.isPublished})
       : super(key: key);
 
   @override
@@ -15,6 +20,7 @@ class ArticleDescriptionPage extends StatefulWidget {
 }
 
 class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
+  ArticlesRepository _articlesRepository = ArticlesRepository();
   ProfileRepository _profileRepository = ProfileRepository();
   UserData _contactData = UserData();
 
@@ -41,6 +47,26 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
   Widget build(BuildContext context) {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
+
+    Widget _buildPopupDialog(String body, bool success) => AlertDialog(
+          title: Text('Eliminar artículo'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(body),
+            ],
+          ),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              textColor: Theme.of(context).primaryColor,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
 
     Widget _titleText() => Container(
           alignment: Alignment.centerLeft,
@@ -119,6 +145,35 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
                         onPressed: () {
                           Navigator.pop(context);
                         }),
+                    actions: [
+                      widget.isPublished
+                          ? IconButton(
+                              icon: Icon(Icons.delete_outline,
+                                  color: Colors.black,
+                                  size: _screenSizeWidth / 15),
+                              onPressed: () async {
+                                setState(() => _isloading = true);
+
+                                var resp = await _articlesRepository
+                                    .deleteArticle(widget.articleMap['url']);
+
+                                if (resp == Response.success) {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (_) => HiddenDrowerMenu()),
+                                      (Route<dynamic> route) => false);
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _buildPopupDialog(
+                                              'Algo salió mal!', false));
+                                }
+
+                                setState(() => _isloading = false);
+                              })
+                          : SizedBox()
+                    ],
                   ),
                   body: SingleChildScrollView(
                     child: Column(children: [

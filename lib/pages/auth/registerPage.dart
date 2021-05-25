@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return 'El campo contraseña es obligatorio';
     } else {
       if (!_regex.hasMatch(value)) {
-        return 'El formato del campo contraseña no es válido';
+        return '6 caracteres, 1 mayúscula, 1 alfa numérico y 1 especial';
       } else {
         return null;
       }

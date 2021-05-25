@@ -46,16 +46,16 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
     } catch (e) {}
   }
 
-  _postArticle(BuildContext context) async {
+  _postArticle() async {
     // final Directory systemTempDir = Directory.systemTemp;
-    final byteData = await rootBundle.load(_img);
+    // final byteData = await rootBundle.load(_img);
     // final file =
     //     File('${systemTempDir.path}/${_articleNameController.text}.jpeg');
 
     final file = _selectedPicture;
 
-    await file.writeAsBytes(byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    // await file.writeAsBytes(byteData.buffer
+    //     .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
     var image = ImageModel(
         file: file,
@@ -181,7 +181,7 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
           onPressed: () async {
             setState(() => _isloading = true);
 
-            var resp = await _postArticle(context);
+            var resp = await _postArticle();
 
             if (resp == Response.success) {
               showDialog(
