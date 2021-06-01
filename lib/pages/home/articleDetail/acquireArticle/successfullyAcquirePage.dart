@@ -85,10 +85,6 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
                     SizedBox(height: _screenSizeWidth / 65),
                     Text('(+57) ${_contactData?.phoneNumber}',
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
-                    // TODO: Implement transaction id
-                    // SizedBox(height: _screenSizeWidth / 15),
-                    // Text('idAdq.: 1234',
-                    //     style: TextStyle(fontSize: _fontScaling / 0.08)),
                   ],
                 )),
           ),

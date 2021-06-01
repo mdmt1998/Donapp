@@ -10,15 +10,6 @@ class AuthRepository {
 
   SharedPreference _sharedPreference = SharedPreference();
 
-  // // create user obj based on firebase User
-  // UserModel _userFromFirebaseUser(User firebaseUser) {
-  //   return firebaseUser != null ? UserModel(uId: firebaseUser.uid) : null;
-  // }
-
-  // Stream<UserModel> get user {
-  //   return _firebaseAuth.authStateChanges().map(_userFromFirebaseUser);
-  // }
-
   Future signIn(String email, String password) async {
     _sharedPreference.init();
 
@@ -52,11 +43,6 @@ class AuthRepository {
       var user = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      //     _database. .database().ref('users/' + user.uid).set({
-      //     firstName: firstName,
-      //     lastName: lastNames
-      // })
-
       print('Registered ${user.user}');
 
       _sharedPreference
@@ -80,16 +66,6 @@ class AuthRepository {
 
   Future registerUserData(UserData data) async {
     try {
-      // var data = {
-      //   'uId': uId,
-      //   'email': email, //
-      //   'password': password, //
-      //   'name': name,
-      //   'address': address,
-      //   'phoneNumber': phoneNumber,
-      //   'city': city
-      // };
-
       await _database.reference().child('User').push().set(data.toJson());
     } on FirebaseAuthException catch (e) {
       print(e.toString());
@@ -110,17 +86,5 @@ class AuthRepository {
       ..deletePreference();
 
     return await _firebaseAuth.signOut();
-  }
-
-  Future userProfile() async {
-    // var user = _firebaseAuth.currentUser;
-
-    // user.displayName;
-
-    // var task = <String, dynamic>{
-    //   'content': value,
-    //   'timestamp': DateTime.now().millisecondsSinceEpoch
-    // };
-    // Database.addTask(task);
   }
 }

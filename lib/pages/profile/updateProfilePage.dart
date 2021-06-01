@@ -104,31 +104,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               controller: _nameController,
               textInputType: TextInputType.text,
               autoValidateMode: AutovalidateMode.onUserInteraction,
-              // validator: _validateInputs,
             ),
             SizedBox(height: _screenSizeWidth / 20),
-            // TextFormFieldWidget(
-            //   hintText: 'correo@correo.com',
-            //   controller: _emailController,
-            //   textInputType: TextInputType.emailAddress,
-            //   autoValidateMode: AutovalidateMode.onUserInteraction,
-            //   validator: _validateEmail,
-            // ),
-            // SizedBox(height: _screenSizeWidth / 20),
-            // TextFormFieldWidget(
-            //   hintText: 'Contraseña',
-            //   controller: _passwordController,
-            //   textInputType: TextInputType.text,
-            //   autoValidateMode: AutovalidateMode.onUserInteraction,
-            //   validator: _validatePassword,
-            // ),
-            // SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
               hintText: 'Ciudad',
               controller: _cityController,
               textInputType: TextInputType.text,
               autoValidateMode: AutovalidateMode.onUserInteraction,
-              // validator: _validateInputs,
             ),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
@@ -136,7 +118,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               controller: _addressController,
               textInputType: TextInputType.text,
               autoValidateMode: AutovalidateMode.onUserInteraction,
-              // validator: _validateInputs,
             ),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
@@ -144,7 +125,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               controller: _phoneController,
               textInputType: TextInputType.phone,
               autoValidateMode: AutovalidateMode.onUserInteraction,
-              // validator: _validateInputs,
             )
           ]),
         );
@@ -156,8 +136,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           width: _screenSizeWidth / 2.5,
           onPressed: () async {
             setState(() => _isloading = true);
-
-            // if (!_formKey.currentState.validate()) return;
 
             var userData = UserData(
                 uId: widget.userData.uId,

@@ -86,7 +86,6 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
 
     Widget _description() => Center(
           child: Text(widget.articleMap['description']),
-          // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make'),
         );
 
     Widget _contact() => Card(
@@ -118,10 +117,6 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
                     SizedBox(height: _screenSizeWidth / 65),
                     Text('(+57) ${_contactData?.phoneNumber}',
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
-                    // TODO: Implement transaction id
-                    // SizedBox(height: _screenSizeWidth / 15),
-                    // Text('idReg.: 000',
-                    //     style: TextStyle(fontSize: _fontScaling / 0.08)),
                   ],
                 )),
           ),

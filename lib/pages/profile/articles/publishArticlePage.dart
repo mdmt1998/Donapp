@@ -47,15 +47,7 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
   }
 
   _postArticle() async {
-    // final Directory systemTempDir = Directory.systemTemp;
-    // final byteData = await rootBundle.load(_img);
-    // final file =
-    //     File('${systemTempDir.path}/${_articleNameController.text}.jpeg');
-
     final file = _selectedPicture;
-
-    // await file.writeAsBytes(byteData.buffer
-    //     .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
     var image = ImageModel(
         file: file,
@@ -165,9 +157,7 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
           width: _screenSizeWidth,
           child: GestureDetector(
             onTap: () {
-              // setState(() {
               _selectImageFromGallery(ImageSource.gallery);
-              // });
             },
             child: Card(elevation: 2.0, child: Center(child: _showImage())),
           ),

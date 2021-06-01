@@ -16,59 +16,20 @@ class ArticleDetailPage extends StatefulWidget {
 }
 
 class _ArticleDetailPageState extends State<ArticleDetailPage> {
-  // PageController _pageController;
-
-  // List<String> images;
-
   String _principalImage;
   String _articleName;
   String _articleDescription;
   String _contactUId;
 
-  // _cardPictureSlider(int index) => AnimatedBuilder(
-  //       animation: _pageController,
-  //       builder: (BuildContext context, Widget widget) {
-  //         double value = 1;
-  //         if (_pageController.position.haveDimensions) {
-  //           value = _pageController.page - index;
-  //           value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
-  //         }
-  //         return Center(
-  //             child: SizedBox(
-  //                 height: Curves.easeInOut.transform(value) * 270.0,
-  //                 width: Curves.easeInOut.transform(value) * 400.0,
-  //                 child: Card(
-  //                     elevation: 3,
-  //                     child: Padding(
-  //                         padding: const EdgeInsets.all(8.0),
-  //                         child: Image.network(images[index])))));
-  //       },
-  //     );
-
   @override
   void initState() {
     super.initState();
-    // _pageController = PageController(initialPage: 1, viewportFraction: 0.25);
-    // images = [
-    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657563.svg',
-    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657361.svg',
-    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
-    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657563.svg',
-    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657361.svg',
-    //   'https://www.flaticon.es/premium-icon/icons/svg/657/657260.svg',
-    // ];
 
     _contactUId = widget.articleMap['contactUId'];
     _principalImage = widget.articleMap['url'];
     _articleName = widget.articleMap['articleName'];
     _articleDescription = widget.articleMap['description'];
   }
-
-  // @override
-  // void dispose() {
-  //   _pageController.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,17 +63,6 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                     ))
               ])),
         );
-
-    // Widget _picturesCarousel() => Container(
-    //       // padding: EdgeInsets.only(left: _screenSizeWidth / 20),
-    //       height: _screenSizeWidth / 6,
-    //       child: PageView.builder(
-    //         controller: _pageController,
-    //         physics: BouncingScrollPhysics(),
-    //         itemBuilder: (_, int index) => _cardPictureSlider(index),
-    //         itemCount: images.length,
-    //       ),
-    //     );
 
     Widget _descriptionContainer() => Container(
           height: _screenSizeWidth / 2,
@@ -198,8 +148,6 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                         child: Column(children: [
                       SizedBox(height: _screenSizeWidth / 20),
                       _principalPictureContainer(),
-                      // SizedBox(height: _screenSizeWidth / 13),
-                      // _picturesCarousel(),
                       SizedBox(height: _screenSizeWidth / 9),
                       _descriptionContainer(),
                       SizedBox(height: _screenSizeWidth / 9),

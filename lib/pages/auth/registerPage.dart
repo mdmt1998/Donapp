@@ -152,10 +152,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       setState(() => _showPassword = !_showPassword);
                     },
                     child: Icon(
-                      _showPassword ? Icons.visibility : Icons.visibility_off,
-                      size: _screenSizeWidth / 20,
-                      // color: Colors.grey
-                    ))),
+                        _showPassword ? Icons.visibility : Icons.visibility_off,
+                        size: _screenSizeWidth / 20))),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
               hintText: 'Ciudad',

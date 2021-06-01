@@ -15,13 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.white, // Color for Android
-        statusBarBrightness:
-            Brightness.light // Dark == white status bar -- for IOS.
-        ));
-
-    // final _screenSizeWidth = MediaQuery.of(context).size.width;
-    // final _fontScaling = MediaQuery.of(context).textScaleFactor;
+        statusBarColor: Colors.white, statusBarBrightness: Brightness.light));
 
     /**
      *
@@ -30,9 +24,9 @@ class MyApp extends StatelessWidget {
       title: 'Donapp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(0, 93, 255, 1), // azul
+        primaryColor: Color.fromRGBO(0, 93, 255, 1),
         secondaryHeaderColor: Color.fromRGBO(5, 4, 28, 1),
-        accentColor: Color.fromRGBO(139, 180, 254, 1), // violeta
+        accentColor: Color.fromRGBO(139, 180, 254, 1),
       ),
       home: LoginPage(),
     );

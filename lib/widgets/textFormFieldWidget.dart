@@ -84,7 +84,6 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       onChanged: widget.onChanged,
       onSaved: widget.onSaved,
       style: TextStyle(
-        // fontFamily: 'LatoLight',
         color: Theme.of(context).primaryColor,
         fontSize: widget.fontSizeStyle ?? _screenWidth / 25,
       ),
@@ -92,19 +91,16 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         helperText: widget.helperText,
         helperMaxLines: widget.helperMaxLines,
         helperStyle: TextStyle(
-          // fontFamily: 'LatoLight',
           fontSize: _screenWidth / 30,
           color: Theme.of(context).primaryColor,
         ),
         labelText: widget.labelText,
         labelStyle: TextStyle(
-          // fontFamily: 'LatoRegular',
           color: Theme.of(context).primaryColor,
           fontSize: widget.fontSizeLabel ?? _screenWidth / 25,
         ),
         hintText: widget.hintText,
         hintStyle: TextStyle(
-          // fontFamily: 'LatoLight',
           color: Colors.grey,
           fontSize: widget.fontSizeHint ?? _screenWidth / 25,
         ),
