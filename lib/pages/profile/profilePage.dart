@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../repositories/globals/sharedPreferences/sharedPrefences.dart';
+import '../../repositories/globals/sharedPreferences/sharedPreferences.dart';
 import '../../repositories/profile/profileRepository.dart';
 import '../../repositories/auth/authRepository.dart';
 import '../../models/auth/userDataModel.dart';

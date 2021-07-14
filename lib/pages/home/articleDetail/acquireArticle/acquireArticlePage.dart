@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../../../repositories/globals/sharedPreferences/sharedPrefences.dart';
+import '../../../../repositories/globals/sharedPreferences/sharedPreferences.dart';
 import '../../../../repositories/globals/constants/constants.dart';
 import '../../../../repositories/articles/articlesRepository.dart';
 import '../../../../models/articles/acquireArticleModel.dart';
@@ -23,7 +23,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
   ArticlesRepository _articlesRepository = ArticlesRepository();
   SharedPreference _sharedPreference = SharedPreference();
 
-  bool _isloading = false;
+  bool _isLoading = false;
 
   _acquireArticle() async {
     var article = AcquireArticleModel(
@@ -95,6 +95,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                   style: TextStyle(
                       fontSize: _fontScaling / 0.04,
                       color: Theme.of(context).primaryColor)),
+              SizedBox(height: _screenSizeWidth / 20),
               Container(
                   width: _screenSizeWidth,
                   height: _screenSizeWidth / 2,
@@ -107,7 +108,8 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                   )),
               Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(widget.articleMap['description'])),
+                  child: Text(widget.articleMap['description'],
+                      style: TextStyle(fontSize: _fontScaling / 0.058))),
               SizedBox(height: _screenSizeWidth / 20),
             ],
           ),
@@ -122,7 +124,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                   buttonText: 'Adquirir',
                   elevation: 5.0,
                   onPressed: () async {
-                    setState(() => _isloading = true);
+                    setState(() => _isLoading = true);
 
                     var resp = await _acquireArticle();
 
@@ -136,18 +138,18 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SuccessfullyAcquirePage(
-                                  contactUId:
-                                      widget.articleMap['contactUId'])));
+                                  contactUId: widget.articleMap['contactUId'],
+                                  url: widget.articleMap['url'])));
                     }
 
-                    setState(() => _isloading = false);
+                    setState(() => _isLoading = false);
                   }),
               ButtonWidget(
                   width: _screenSizeWidth / 2.5,
                   buttonText: 'Cancelar',
                   elevation: 5.0,
                   onPressed: () async {
-                    setState(() => _isloading = true);
+                    setState(() => _isLoading = true);
 
                     var resp = await _cancelProcess();
 
@@ -162,7 +164,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                           (Route<dynamic> route) => false);
                     }
 
-                    setState(() => _isloading = false);
+                    setState(() => _isLoading = false);
                   })
             ]);
 
@@ -173,7 +175,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
       color: Colors.white,
       child: SafeArea(
         bottom: false,
-        child: _isloading
+        child: _isLoading
             ? Center(child: CircularProgressIndicator())
             : Scaffold(
                 appBar: AppBar(

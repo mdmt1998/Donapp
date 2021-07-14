@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../repositories/profile/profileRepository.dart';
 import '../../../../models/auth/userDataModel.dart';
@@ -18,16 +19,16 @@ class _DonorContactPageState extends State<DonorContactPage> {
   ProfileRepository _profileRepository = ProfileRepository();
   UserData _contactData = UserData();
 
-  bool _isloading = false;
+  bool _isLoading = false;
 
   _getContactInformation() async {
-    setState(() => _isloading = true);
+    setState(() => _isLoading = true);
 
     await _profileRepository
         .getUserData(widget.contactUId)
         .then((value) => setState(() => _contactData = value));
 
-    setState(() => _isloading = false);
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -50,7 +51,7 @@ class _DonorContactPageState extends State<DonorContactPage> {
           ),
         );
 
-    Widget _conatactData() => Padding(
+    Widget _contactDataColumn() => Padding(
           padding: const EdgeInsets.all(42.0),
           child: Container(
             alignment: Alignment.centerLeft,
@@ -69,8 +70,13 @@ class _DonorContactPageState extends State<DonorContactPage> {
                 Text(_contactData?.email,
                     style: TextStyle(fontSize: _fontScaling / 0.065)),
                 SizedBox(height: _screenSizeWidth / 65),
-                Text('(+57) ${_contactData?.phoneNumber}',
-                    style: TextStyle(fontSize: _fontScaling / 0.065))
+                FlatButton(
+                    child: Text('(+57) ${_contactData?.phoneNumber}',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: _fontScaling / 0.065)),
+                    onPressed: () =>
+                        launch('tel://${_contactData?.phoneNumber}'))
               ],
             ),
           ),
@@ -83,7 +89,7 @@ class _DonorContactPageState extends State<DonorContactPage> {
       color: Colors.white,
       child: SafeArea(
         bottom: false,
-        child: _isloading
+        child: _isLoading
             ? Center(child: CircularProgressIndicator())
             : Scaffold(
                 appBar: AppBar(
@@ -107,7 +113,7 @@ class _DonorContactPageState extends State<DonorContactPage> {
                       SizedBox(height: _screenSizeWidth / 5),
                       SvgPicture.asset('assets/contact.svg',
                           fit: BoxFit.cover, height: _screenSizeWidth / 2),
-                      _conatactData(),
+                      _contactDataColumn(),
                       SizedBox(height: _screenSizeWidth / 15),
                     ],
                   )),

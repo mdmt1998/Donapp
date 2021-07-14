@@ -99,6 +99,30 @@ class ArticlesRepository {
     }
   }
 
+  Future returnArticle(AcquireArticleModel article, String url) async {
+    try {
+      var nodeAcquiredArticle = await _getPublishedArticleNodeValueByUId(
+          url, DatabaseChild.acquired_articles);
+
+      await _database
+          .reference()
+          .child('${DatabaseChild.acquired_articles}/$nodeAcquiredArticle')
+          .remove();
+
+      await _database
+          .reference()
+          .child(DatabaseChild.available_articles)
+          .push()
+          .set(article.toJson());
+
+      return Response.success;
+    } on FirebaseException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future postAcquireArticle(AcquireArticleModel article) async {
     try {
       var node = await _getPublishedArticleNodeValueByUId(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../repositories/profile/profileRepository.dart';
 import '../../../../models/auth/userDataModel.dart';
@@ -8,8 +9,10 @@ import '../../../../widgets/buttonWidget.dart';
 
 class SuccessfullyAcquirePage extends StatefulWidget {
   final String contactUId;
+  final String url;
 
-  const SuccessfullyAcquirePage({Key key, @required this.contactUId})
+  const SuccessfullyAcquirePage(
+      {Key key, @required this.contactUId, @required this.url})
       : super(key: key);
 
   @override
@@ -22,16 +25,16 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
   UserData _contactData = UserData();
 
   bool isExpanding = true;
-  bool _isloading = false;
+  bool _isLoading = false;
 
   _getContactInformation() async {
-    setState(() => _isloading = true);
+    setState(() => _isLoading = true);
 
     await _profileRepository
         .getUserData(widget.contactUId)
         .then((value) => setState(() => _contactData = value));
 
-    setState(() => _isloading = false);
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -83,8 +86,13 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
                     Text(_contactData?.email,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 65),
-                    Text('(+57) ${_contactData?.phoneNumber}',
-                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    FlatButton(
+                        child: Text('(+57) ${_contactData?.phoneNumber}',
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: _fontScaling / 0.065)),
+                        onPressed: () =>
+                            launch('tel://${_contactData?.phoneNumber}'))
                   ],
                 )),
           ),
@@ -107,7 +115,7 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
       color: Colors.white,
       child: SafeArea(
         bottom: false,
-        child: _isloading
+        child: _isLoading
             ? Center(child: CircularProgressIndicator())
             : Scaffold(
                 body: Padding(
@@ -118,8 +126,16 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
                       child: Column(
                     children: [
                       SizedBox(height: _screenSizeWidth / 5),
-                      SvgPicture.asset('assets/newProduct.svg',
-                          fit: BoxFit.cover, height: _screenSizeWidth / 2.2),
+                      Container(
+                        height: _screenSizeWidth / 2.2,
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: widget.url,
+                          fit: BoxFit.scaleDown,
+                          placeholderCacheWidth: 100,
+                          alignment: Alignment.topCenter,
+                        ),
+                      ),
                       SizedBox(height: _screenSizeWidth / 10),
                       _titleText(),
                       SizedBox(height: _screenSizeWidth / 8),

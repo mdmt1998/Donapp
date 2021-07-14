@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../../repositories/globals/constants/constants.dart';
-import '../../../repositories/articles/articlesRepository.dart';
-import '../../../repositories/profile/profileRepository.dart';
+import '../../../models/articles/acquireArticleModel.dart';
 import '../../../models/auth/userDataModel.dart';
+import '../../../repositories/articles/articlesRepository.dart';
+import '../../../repositories/globals/constants/constants.dart';
+import '../../../repositories/profile/profileRepository.dart';
 import '../../../widgets/hiddenDrawerMenu.dart';
 
 class ArticleDescriptionPage extends StatefulWidget {
@@ -24,16 +26,16 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
   ProfileRepository _profileRepository = ProfileRepository();
   UserData _contactData = UserData();
 
-  bool _isloading = false;
+  bool _isLoading = false;
 
   _getContactInformation() async {
-    setState(() => _isloading = true);
+    setState(() => _isLoading = true);
 
     await _profileRepository
         .getUserData(widget.articleMap['contactUId'])
         .then((value) => setState(() => _contactData = value));
 
-    setState(() => _isloading = false);
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -49,7 +51,7 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
     Widget _buildPopupDialog(String body, bool success) => AlertDialog(
-          title: Text('Eliminar artículo'),
+          title: Text('Detalle de artículo'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,10 +117,84 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
                     Text(_contactData?.email,
                         style: TextStyle(fontSize: _fontScaling / 0.065)),
                     SizedBox(height: _screenSizeWidth / 65),
-                    Text('(+57) ${_contactData?.phoneNumber}',
-                        style: TextStyle(fontSize: _fontScaling / 0.065)),
+                    FlatButton(
+                        child: Text('(+57) ${_contactData?.phoneNumber}',
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: _fontScaling / 0.065)),
+                        onPressed: () =>
+                            launch('tel://${_contactData?.phoneNumber}'))
                   ],
                 )),
+          ),
+        );
+
+    Widget _deleteArticle() => IconButton(
+        icon: Icon(Icons.delete_outline,
+            color: Colors.black, size: _screenSizeWidth / 15),
+        onPressed: () async {
+          setState(() => _isLoading = true);
+
+          var resp =
+              await _articlesRepository.deleteArticle(widget.articleMap['url']);
+
+          if (resp == Response.success) {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                (Route<dynamic> route) => false);
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    _buildPopupDialog('Algo salió mal!', false));
+          }
+
+          setState(() => _isLoading = false);
+        });
+
+    Widget _returnArticle() => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.keyboard_return_sharp,
+                  color: Colors.black,
+                  size: _screenSizeWidth / 15,
+                ),
+                Text('Desistir',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: _fontScaling / 0.065,
+                    )),
+              ],
+            ),
+            onTap: () async {
+              setState(() => _isLoading = true);
+
+              final article = AcquireArticleModel(
+                  url: widget.articleMap['url'],
+                  description: widget.articleMap['description'],
+                  articleName: widget.articleMap['articleName'],
+                  contactUId: widget.articleMap['contactUId'],
+                  uId: widget.articleMap['contactUId']);
+
+              final resp = await _articlesRepository.returnArticle(
+                  article, widget.articleMap['url']);
+
+              if (resp == Response.success) {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                    (Route<dynamic> route) => false);
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        _buildPopupDialog('Algo salió mal!', false));
+              }
+
+              setState(() => _isLoading = false);
+            },
           ),
         );
 
@@ -129,47 +205,21 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
       color: Colors.white,
       child: SafeArea(
           bottom: false,
-          child: _isloading
+          child: _isLoading
               ? Center(child: CircularProgressIndicator())
               : Scaffold(
                   appBar: AppBar(
-                    elevation: 0.0,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    leading: IconButton(
-                        icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                    actions: [
-                      widget.isPublished
-                          ? IconButton(
-                              icon: Icon(Icons.delete_outline,
-                                  color: Colors.black,
-                                  size: _screenSizeWidth / 15),
-                              onPressed: () async {
-                                setState(() => _isloading = true);
-
-                                var resp = await _articlesRepository
-                                    .deleteArticle(widget.articleMap['url']);
-
-                                if (resp == Response.success) {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (_) => HiddenDrowerMenu()),
-                                      (Route<dynamic> route) => false);
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          _buildPopupDialog(
-                                              'Algo salió mal!', false));
-                                }
-
-                                setState(() => _isloading = false);
-                              })
-                          : SizedBox()
-                    ],
-                  ),
+                      elevation: 0.0,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      leading: IconButton(
+                          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      actions: [
+                        widget.isPublished ? _deleteArticle() : _returnArticle()
+                      ]),
                   body: SingleChildScrollView(
                     child: Column(children: [
                       Padding(

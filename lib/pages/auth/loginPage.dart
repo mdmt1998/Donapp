@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   RegExp _regex;
   Pattern _pattern;
 
-  bool _isloading = false;
+  bool _isLoading = false;
   bool _showPassword = false;
 
   String _validateEmail(value) {
@@ -130,7 +130,8 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget _createAccount() => Container(
           alignment: Alignment.centerRight,
-          child: FlatButton(
+          child: RaisedButton(
+            elevation: 0.0,
             child: Text('Crear cuenta'),
             onPressed: () {
               Navigator.push(context,
@@ -145,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
           width: _screenSizeWidth / 2.5,
           elevation: 2.0,
           onPressed: () async {
-            setState(() => _isloading = true);
+            setState(() => _isLoading = true);
 
             if (!_formKey.currentState.validate()) return;
 
@@ -169,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
             }
-            setState(() => _isloading = false);
+            setState(() => _isLoading = false);
           },
         );
 
@@ -182,44 +183,51 @@ class _LoginPageState extends State<LoginPage> {
         bottom: false,
         child: Scaffold(
           backgroundColor: Colors.black87,
-          body: _isloading
+          body: _isLoading
               ? Center(child: CircularProgressIndicator())
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: _screenSizeWidth / 1.13,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(_screenSizeWidth / 10),
-                              topLeft: Radius.circular(_screenSizeWidth / 10))),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: _screenSizeWidth / 15,
-                            top: _screenSizeWidth / 15,
-                            right: _screenSizeWidth / 15),
-                        child: Stack(
-                          children: [
-                            SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  _titleText(),
-                                  SizedBox(height: _screenSizeWidth / 15),
-                                  _loginFields(),
-                                  _createAccount(),
-                                  SizedBox(height: _screenSizeWidth / 50),
-                                  _loginButton(),
-                                  SizedBox(height: _screenSizeWidth / 900),
-                                ],
-                              ),
-                            )
-                          ],
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: _screenSizeWidth / 5),
+                      Image(
+                          image: AssetImage('assets/iconLauncher.png'),
+                          height: _screenSizeWidth / 2),
+                      SizedBox(height: _screenSizeWidth / 7),
+                      Container(
+                        height: _screenSizeWidth / 1.13,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topRight:
+                                    Radius.circular(_screenSizeWidth / 10),
+                                topLeft:
+                                    Radius.circular(_screenSizeWidth / 10))),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: _screenSizeWidth / 15,
+                              top: _screenSizeWidth / 15,
+                              right: _screenSizeWidth / 15),
+                          child: Stack(
+                            children: [
+                              SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    _titleText(),
+                                    SizedBox(height: _screenSizeWidth / 15),
+                                    _loginFields(),
+                                    _createAccount(),
+                                    SizedBox(height: _screenSizeWidth / 50),
+                                    _loginButton(),
+                                    SizedBox(height: _screenSizeWidth / 900),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
         ),
       ),

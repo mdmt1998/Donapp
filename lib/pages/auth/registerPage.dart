@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../repositories/auth/authRepository.dart';
-import '../../widgets/textFormFieldWidget.dart';
 import '../../models/auth/userDataModel.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
+import '../../repositories/auth/authRepository.dart';
 import '../../widgets/buttonWidget.dart';
+import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/textFormFieldWidget.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   RegExp _regex;
   Pattern _pattern;
 
-  bool _isloading = false;
+  bool _isLoading = false;
   bool _showPassword = false;
 
   String _validateEmail(value) {
@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return 'El campo contraseña es obligatorio';
     } else {
       if (!_regex.hasMatch(value)) {
-        return '6 caracteres, 1 mayúscula, 1 alfa numérico y 1 especial';
+        return '8 caracteres, 1 mayúscula, 1 alfa numérico y\n1 especial';
       } else {
         return null;
       }
@@ -189,7 +189,7 @@ class _RegisterPageState extends State<RegisterPage> {
           onPressed: () async {
             if (!_formKey.currentState.validate()) return;
 
-            setState(() => _isloading = true);
+            setState(() => _isLoading = true);
 
             var result = await _authService.registerEmailAndPassword(
                 _emailController.text, _passwordController.text);
@@ -221,7 +221,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
             }
 
-            setState(() => _isloading = false);
+            setState(() => _isLoading = false);
           },
         );
 
@@ -233,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          body: _isloading
+          body: _isLoading
               ? Center(child: CircularProgressIndicator())
               : Padding(
                   padding: EdgeInsets.symmetric(
