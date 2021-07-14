@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/auth/userDataModel.dart';
@@ -5,6 +6,7 @@ import '../../repositories/auth/authRepository.dart';
 import '../../widgets/buttonWidget.dart';
 import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';
+import 'tycPage.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -28,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _isLoading = false;
   bool _showPassword = false;
+  bool _isChecked = false;
 
   String _validateEmail(value) {
     _pattern =
@@ -181,6 +184,46 @@ class _RegisterPageState extends State<RegisterPage> {
           ]),
         );
 
+    Widget _checkBoxTyC() => Container(
+          width: _screenSizeWidth / 1.2,
+          child: Row(children: <Widget>[
+            Container(
+              height: _screenSizeWidth / 50,
+              width: _screenSizeWidth / 30,
+              child: Checkbox(
+                value: _isChecked,
+                onChanged: (bool value) {
+                  setState(() => _isChecked = value);
+                },
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.only(left: _screenSizeWidth / 20),
+                child: RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                    text: 'Acepto ',
+                    style: TextStyle(
+                        color: Colors.grey, fontSize: _screenSizeWidth / 32),
+                  ),
+                  TextSpan(
+                    text: 'términos y condiciones',
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.grey,
+                        fontSize: _screenSizeWidth / 32),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TyCPage()),
+                        );
+                      },
+                  )
+                ])))
+          ]),
+        );
+
     Widget _registerButton() => ButtonWidget(
           buttonText: 'Crear cuenta',
           elevation: 3,
@@ -188,6 +231,8 @@ class _RegisterPageState extends State<RegisterPage> {
           width: _screenSizeWidth / 2.5,
           onPressed: () async {
             if (!_formKey.currentState.validate()) return;
+
+            if (!_isChecked) return;
 
             setState(() => _isLoading = true);
 
@@ -259,6 +304,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       _titleText(),
                       SizedBox(height: _screenSizeWidth / 20),
                       _registerFields(),
+                      SizedBox(height: _screenSizeWidth / 20),
+                      _checkBoxTyC(),
                       SizedBox(height: _screenSizeWidth / 10),
                       _registerButton(),
                       SizedBox(height: _screenSizeWidth / 5),

@@ -188,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
               : SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: _screenSizeWidth / 5),
+                      SizedBox(height: _screenSizeWidth / 8),
                       Image(
                           image: AssetImage('assets/iconLauncher.png'),
                           height: _screenSizeWidth / 2),
@@ -209,18 +209,16 @@ class _LoginPageState extends State<LoginPage> {
                               right: _screenSizeWidth / 15),
                           child: Stack(
                             children: [
-                              SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    _titleText(),
-                                    SizedBox(height: _screenSizeWidth / 15),
-                                    _loginFields(),
-                                    _createAccount(),
-                                    SizedBox(height: _screenSizeWidth / 50),
-                                    _loginButton(),
-                                    SizedBox(height: _screenSizeWidth / 900),
-                                  ],
-                                ),
+                              Column(
+                                children: [
+                                  _titleText(),
+                                  SizedBox(height: _screenSizeWidth / 15),
+                                  _loginFields(),
+                                  _createAccount(),
+                                  SizedBox(height: _screenSizeWidth / 50),
+                                  _loginButton(),
+                                  SizedBox(height: _screenSizeWidth / 20),
+                                ],
                               )
                             ],
                           ),
