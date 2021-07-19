@@ -185,15 +185,16 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.black87,
           body: _isLoading
               ? Center(child: CircularProgressIndicator())
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: _screenSizeWidth / 8),
-                      Image(
-                          image: AssetImage('assets/iconLauncher.png'),
-                          height: _screenSizeWidth / 2),
-                      SizedBox(height: _screenSizeWidth / 7),
-                      Container(
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(height: _screenSizeWidth / 8),
+                    Image(
+                        image: AssetImage('assets/iconLauncher.png'),
+                        height: _screenSizeWidth / 2),
+                    SizedBox(height: _screenSizeWidth / 7),
+                    Container(
                         height: _screenSizeWidth / 1.13,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -207,25 +208,19 @@ class _LoginPageState extends State<LoginPage> {
                               left: _screenSizeWidth / 15,
                               top: _screenSizeWidth / 15,
                               right: _screenSizeWidth / 15),
-                          child: Stack(
+                          child: Column(
                             children: [
-                              Column(
-                                children: [
-                                  _titleText(),
-                                  SizedBox(height: _screenSizeWidth / 15),
-                                  _loginFields(),
-                                  _createAccount(),
-                                  SizedBox(height: _screenSizeWidth / 50),
-                                  _loginButton(),
-                                  SizedBox(height: _screenSizeWidth / 20),
-                                ],
-                              )
+                              _titleText(),
+                              SizedBox(height: _screenSizeWidth / 15),
+                              _loginFields(),
+                              _createAccount(),
+                              SizedBox(height: _screenSizeWidth / 50),
+                              _loginButton(),
+                              SizedBox(height: _screenSizeWidth / 20),
                             ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
+                        )),
+                  ],
                 ),
         ),
       ),
