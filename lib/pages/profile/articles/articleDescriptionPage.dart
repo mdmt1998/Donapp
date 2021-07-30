@@ -7,7 +7,7 @@ import '../../../models/auth/userDataModel.dart';
 import '../../../repositories/articles/articlesRepository.dart';
 import '../../../repositories/globals/constants/constants.dart';
 import '../../../repositories/profile/profileRepository.dart';
-import '../../../widgets/hiddenDrawerMenu.dart';
+import '../../../widgets/drawerMenu.dart';
 
 class ArticleDescriptionPage extends StatefulWidget {
   final Map articleMap;
@@ -140,7 +140,7 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
 
           if (resp == Response.success) {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                MaterialPageRoute(builder: (_) => DrawerMenu()),
                 (Route<dynamic> route) => false);
           } else {
             showDialog(
@@ -184,7 +184,7 @@ class _ArticleDescriptionPageState extends State<ArticleDescriptionPage> {
 
               if (resp == Response.success) {
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                    MaterialPageRoute(builder: (_) => DrawerMenu()),
                     (Route<dynamic> route) => false);
               } else {
                 showDialog(

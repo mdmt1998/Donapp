@@ -74,12 +74,18 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
                   Container(
                       width: _screenSizeWidth,
                       height: _screenSizeWidth / 2,
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: '$_principalImage',
-                        fit: BoxFit.scaleDown,
-                        placeholderCacheWidth: 100,
-                        alignment: Alignment.topCenter,
+                      child: InteractiveViewer(
+                        panEnabled: false, // Set it to false
+                        boundaryMargin: EdgeInsets.all(100),
+                        minScale: 0.5,
+                        maxScale: 2,
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: '$_principalImage',
+                          fit: BoxFit.scaleDown,
+                          placeholderCacheWidth: 100,
+                          alignment: Alignment.topCenter,
+                        ),
                       ))
                 ]),
               )),

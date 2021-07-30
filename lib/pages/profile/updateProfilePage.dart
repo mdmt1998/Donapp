@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../models/auth/userDataModel.dart';
 import '../../repositories/globals/constants/constants.dart';
 import '../../repositories/profile/profileRepository.dart';
-import '../../widgets/textFormFieldWidget.dart';
-import '../../models/auth/userDataModel.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
 import '../../widgets/buttonWidget.dart';
+import '../../widgets/drawerMenu.dart';
+import '../../widgets/textFormFieldWidget.dart';
 
 class UpdateProfilePage extends StatefulWidget {
   final UserData userData;
@@ -78,7 +78,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               onPressed: () {
                 if (success) {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                      MaterialPageRoute(builder: (_) => DrawerMenu()),
                       (Route<dynamic> route) => false);
                 } else {
                   Navigator.of(context).pop();

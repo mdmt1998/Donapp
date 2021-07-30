@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../repositories/auth/authRepository.dart';
 import '../../widgets/buttonWidget.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/drawerMenu.dart';
 import '../../widgets/textFormFieldWidget.dart';
 import 'registerPage.dart';
 
@@ -168,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
               print('${result?.uid}');
 
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+                  MaterialPageRoute(builder: (context) => DrawerMenu()));
             }
             setState(() => _isLoading = false);
           },

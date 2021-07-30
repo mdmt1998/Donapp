@@ -43,51 +43,49 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(fontSize: _fontScaling / 0.045)),
         );
 
-    Widget _articlesGrid() => GridView.count(
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          mainAxisSpacing: _screenSizeWidth / 15,
-          children: List.generate(
-              _articlesList.length ?? 0,
-              (index) => Center(
-                      child: Container(
-                    height: _screenSizeWidth / 1.2,
-                    width: _screenSizeWidth / 2.3,
-                    child: GestureDetector(
-                        child: Card(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(_screenSizeWidth / 13))),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: _screenSizeWidth / 3.3,
-                                    width: _screenSizeWidth / 3.3,
-                                    child: Image(
-                                        image: NetworkImage(
-                                            _articlesList[index]['url']),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  SizedBox(height: _screenSizeWidth / 40),
-                                  Text(_articlesList[index]['articleName'],
-                                      style: TextStyle(
-                                          color: Theme.of(context).accentColor,
-                                          fontSize: _fontScaling / 0.055),
-                                      textAlign: TextAlign.center),
-                                ])),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ArticleDetailPage(
-                                      articleMap: _articlesList[index])));
-                        }),
-                  ))),
-        );
+    Widget _articlesGrid() => ListView.builder(
+        itemCount: _articlesList?.length ?? 0,
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: Container(
+                height: _screenSizeWidth / 2.2,
+                width: _screenSizeWidth / 1.2,
+                child: GestureDetector(
+                    child: Card(
+                        elevation: 3,
+                        shadowColor: Theme.of(context).accentColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(_screenSizeWidth / 13))),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: _screenSizeWidth / 3.3,
+                                width: _screenSizeWidth / 3.3,
+                                child: Image(
+                                    image: NetworkImage(
+                                        _articlesList[index]['url']),
+                                    fit: BoxFit.contain),
+                              ),
+                              SizedBox(height: _screenSizeWidth / 40),
+                              Text(_articlesList[index]['articleName'],
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: _fontScaling / 0.055),
+                                  textAlign: TextAlign.center),
+                            ])),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ArticleDetailPage(
+                                  articleMap: _articlesList[index])));
+                    }),
+              )),
+            ));
 
     return _isLoading
         ? Center(child: CircularProgressIndicator())

@@ -5,7 +5,7 @@ import '../../../../repositories/globals/sharedPreferences/sharedPreferences.dar
 import '../../../../repositories/globals/constants/constants.dart';
 import '../../../../repositories/articles/articlesRepository.dart';
 import '../../../../models/articles/acquireArticleModel.dart';
-import '../../../../widgets/hiddenDrawerMenu.dart';
+import '../../../../widgets/drawerMenu.dart';
 import '../../../../widgets/buttonWidget.dart';
 import 'successfullyAcquirePage.dart';
 
@@ -160,7 +160,7 @@ class _AcquireArticlePageState extends State<AcquireArticlePage> {
                               _buildPopupDialog());
                     } else {
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                          MaterialPageRoute(builder: (_) => DrawerMenu()),
                           (Route<dynamic> route) => false);
                     }
 

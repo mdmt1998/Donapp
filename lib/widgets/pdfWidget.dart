@@ -4,12 +4,17 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 
-class TyCPage extends StatefulWidget {
+class PDFWidget extends StatefulWidget {
+  final String title;
+  final String path;
+
+  const PDFWidget({Key key, @required this.path, this.title}) : super(key: key);
+
   @override
-  _TyCPageState createState() => _TyCPageState();
+  _PDFWidgetState createState() => _PDFWidgetState();
 }
 
-class _TyCPageState extends State<TyCPage> {
+class _PDFWidgetState extends State<PDFWidget> {
   PDFDocument _document;
 
   @override
@@ -21,23 +26,25 @@ class _TyCPageState extends State<TyCPage> {
      */
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'Términos y condiciones',
-          style:
-              TextStyle(fontFamily: 'LatoMedium', fontSize: _screenWidth / 20),
-        ),
-        elevation: 0.5,
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: _screenWidth / 15,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-      ),
+      appBar: widget.title != null
+          ? AppBar(
+              title: Text(
+                widget.title,
+                style: TextStyle(
+                    fontFamily: 'LatoMedium', fontSize: _screenWidth / 20),
+              ),
+              elevation: 0.5,
+              leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: _screenWidth / 15,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+            )
+          : PreferredSize(preferredSize: Size(0.0, 0.0), child: SizedBox()),
       body: FutureBuilder<PDFDocument>(
         future: _getDocument(),
         builder: (_, snapshot) {
@@ -57,8 +64,7 @@ class _TyCPageState extends State<TyCPage> {
       return _document;
     }
     if (await hasSupport()) {
-      return _document =
-          await PDFDocument.openAsset('assets/docs/termsConditions.pdf');
+      return _document = await PDFDocument.openAsset(widget.path);
     } else {
       throw Exception(
         'PDF Rendering does not\n'

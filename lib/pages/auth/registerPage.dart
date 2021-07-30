@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../../models/auth/userDataModel.dart';
 import '../../repositories/auth/authRepository.dart';
 import '../../widgets/buttonWidget.dart';
-import '../../widgets/hiddenDrawerMenu.dart';
+import '../../widgets/drawerMenu.dart';
+import '../../widgets/pdfWidget.dart';
 import '../../widgets/textFormFieldWidget.dart';
-import 'tycPage.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -20,6 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   TextEditingController _emailController;
   TextEditingController _passwordController;
+  TextEditingController _confirmPasswordController;
   TextEditingController _addressController;
   TextEditingController _phoneController;
   TextEditingController _nameController;
@@ -30,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _isLoading = false;
   bool _showPassword = false;
+  bool _showConfirmPassword = false;
   bool _isChecked = false;
 
   String _validateEmail(value) {
@@ -54,7 +56,19 @@ class _RegisterPageState extends State<RegisterPage> {
       return 'El campo contraseña es obligatorio';
     } else {
       if (!_regex.hasMatch(value)) {
-        return '8 caracteres, 1 mayúscula, 1 alfa numérico y\n1 especial';
+        return 'Requiere mínimo 8 caracteres, incluyendo 1 mayúscula,\n1 número y 1 especial';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String _validateConfirmPassword(value) {
+    if (value.isEmpty) {
+      return 'El campo confirmar contraseña es obligatorio';
+    } else {
+      if (_passwordController.text != _confirmPasswordController.text) {
+        return 'La constraseña no coincide';
       } else {
         return null;
       }
@@ -74,6 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
     _addressController = TextEditingController();
     _phoneController = TextEditingController();
     _nameController = TextEditingController();
@@ -84,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
     _nameController.dispose();
@@ -96,13 +112,13 @@ class _RegisterPageState extends State<RegisterPage> {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
-    Widget _buildPopupDialog() => AlertDialog(
+    Widget _buildPopupDialog(String text) => AlertDialog(
           title: Text('Error al registrarse'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Por favor, revise los campos requeridos'),
+              Text(text),
             ],
           ),
           actions: [
@@ -159,6 +175,24 @@ class _RegisterPageState extends State<RegisterPage> {
                         size: _screenSizeWidth / 20))),
             SizedBox(height: _screenSizeWidth / 20),
             TextFormFieldWidget(
+                hintText: !_showConfirmPassword ? 'Contraseña' : '********',
+                controller: _confirmPasswordController,
+                textInputType: TextInputType.text,
+                autoValidateMode: AutovalidateMode.onUserInteraction,
+                validator: _validateConfirmPassword,
+                obscureText: !_showConfirmPassword,
+                suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(
+                          () => _showConfirmPassword = !_showConfirmPassword);
+                    },
+                    child: Icon(
+                        _showConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        size: _screenSizeWidth / 20))),
+            SizedBox(height: _screenSizeWidth / 20),
+            TextFormFieldWidget(
               hintText: 'Ciudad',
               controller: _cityController,
               textInputType: TextInputType.text,
@@ -210,14 +244,17 @@ class _RegisterPageState extends State<RegisterPage> {
                     text: 'términos y condiciones',
                     style: TextStyle(
                         decoration: TextDecoration.underline,
-                        color: Colors.grey,
+                        color: Colors.blueAccent,
                         fontSize: _screenSizeWidth / 32),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TyCPage()),
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PDFWidget(
+                                      title: 'Términos y condiciones',
+                                      path: 'assets/docs/termsConditions.pdf',
+                                    )));
                       },
                   )
                 ])))
@@ -230,6 +267,13 @@ class _RegisterPageState extends State<RegisterPage> {
           height: _screenSizeWidth / 11,
           width: _screenSizeWidth / 2.5,
           onPressed: () async {
+            if (!_isChecked) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildPopupDialog(
+                      'Para continuar debe aceptar términos y condiciones.'));
+            }
+
             if (!_formKey.currentState.validate()) return;
 
             if (!_isChecked) return;
@@ -246,7 +290,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
               showDialog(
                   context: context,
-                  builder: (BuildContext context) => _buildPopupDialog());
+                  builder: (BuildContext context) => _buildPopupDialog(
+                      'Por favor, revise los campos requeridos'));
             } else {
               print('CREADA');
               print('${result?.uid}');
@@ -263,7 +308,7 @@ class _RegisterPageState extends State<RegisterPage> {
               await _authService.registerUserData(userData);
 
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HiddenDrowerMenu()));
+                  MaterialPageRoute(builder: (context) => DrawerMenu()));
             }
 
             setState(() => _isLoading = false);

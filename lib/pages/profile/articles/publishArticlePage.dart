@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../models/articles/imageModel.dart';
 import '../../../repositories/articles/articlesRepository.dart';
 import '../../../repositories/globals/constants/constants.dart';
-import '../../../widgets/textFormFieldWidget.dart';
-import '../../../models/articles/imageModel.dart';
-import '../../../widgets/hiddenDrawerMenu.dart';
 import '../../../widgets/buttonWidget.dart';
+import '../../../widgets/drawerMenu.dart';
+import '../../../widgets/textFormFieldWidget.dart';
 
 class PublishArticlePage extends StatefulWidget {
   final String uId;
@@ -92,7 +92,7 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
               onPressed: () {
                 if (success) {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                      MaterialPageRoute(builder: (_) => DrawerMenu()),
                       (Route<dynamic> route) => false);
                 } else {
                   Navigator.of(context).pop();
@@ -124,6 +124,9 @@ class _PublishArticlePageState extends State<PublishArticlePage> {
               hintText: 'Descripción',
               controller: _descriptionController,
               maxLines: 3,
+              helperText:
+                  'Podría indicar atributos como: altura, capacidad de peso, material, estado, peso, entre otros.',
+              helperMaxLines: 5,
               textInputType: TextInputType.text,
               textCapitalization: TextCapitalization.sentences,
             ),

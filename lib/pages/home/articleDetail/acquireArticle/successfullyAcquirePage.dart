@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../repositories/profile/profileRepository.dart';
 import '../../../../models/auth/userDataModel.dart';
-import '../../../../widgets/hiddenDrawerMenu.dart';
+import '../../../../widgets/drawerMenu.dart';
 import '../../../../widgets/buttonWidget.dart';
 
 class SuccessfullyAcquirePage extends StatefulWidget {
@@ -103,7 +103,7 @@ class _SuccessfullyAcquirePageState extends State<SuccessfullyAcquirePage> {
           elevation: 5.0,
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => HiddenDrowerMenu()),
+                MaterialPageRoute(builder: (_) => DrawerMenu()),
                 (Route<dynamic> route) => false);
           },
         );

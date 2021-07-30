@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 
+import '../pages/about/about.dart';
 import '../pages/home/homePage.dart';
 import '../pages/profile/profilePage.dart';
 
-class HiddenDrowerMenu extends StatefulWidget {
+class DrawerMenu extends StatefulWidget {
   @override
-  _HiddenDrowerMenuState createState() => _HiddenDrowerMenuState();
+  _DrawerMenuState createState() => _DrawerMenuState();
 }
 
-class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
+class _DrawerMenuState extends State<DrawerMenu> {
   List<ScreenHiddenDrawer> items = List();
 
   @override
@@ -33,6 +34,15 @@ class _HiddenDrowerMenuState extends State<HiddenDrowerMenu> {
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
         ),
         ProfilePage()));
+
+    items.add(ScreenHiddenDrawer(
+        ItemHiddenMenu(
+          name: 'Acerca de',
+          baseStyle:
+              TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 18.0),
+          colorLineSelected: Color.fromRGBO(153, 148, 250, 1),
+        ),
+        About()));
   }
 
   @override
