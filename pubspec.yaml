@@ -71,6 +71,7 @@ flutter:
     - assets/newProduct.svg
     - assets/user.svg
     - assets/docs/termsConditions.pdf
+    - assets/docs/about.pdf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
