@@ -176,9 +176,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Container(
                                   height: _screenSizeWidth / 700.0,
                                   color: Colors.grey[400])),
-                          SizedBox(height: _screenSizeWidth / 10),
+                          SizedBox(height: _screenSizeWidth / 14),
                           _updateUserData(),
-                          SizedBox(height: _screenSizeWidth / 10),
+                          SizedBox(height: _screenSizeWidth / 14),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Container(
+                                  height: _screenSizeWidth / 700.0,
+                                  color: Colors.grey[400])),
+                          SizedBox(height: _screenSizeWidth / 14),
                           _userPublishedArticles(),
                           SizedBox(height: _screenSizeWidth / 20),
                           _acquireArticles(),
