@@ -37,7 +37,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
     items.add(ScreenHiddenDrawer(
         ItemHiddenMenu(
-          name: 'Acerca de',
+          name: 'A cerca de',
           baseStyle:
               TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 18.0),
           colorLineSelected: Color.fromRGBO(153, 148, 250, 1),

@@ -148,28 +148,22 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () async {
             setState(() => _isLoading = true);
 
-            if (!_formKey.currentState.validate()) return;
+            // if (!_formKey.currentState.validate()) return;
 
-            var result = await _authService.signIn(
-                _emailController.text, _passwordController.text);
+            try {
+              var result = await _authService.signIn(
+                  _emailController.text, _passwordController.text);
+                  
+              if (result == null) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => _buildPopupDialog());
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DrawerMenu()));
+              }
+            } catch (_) {}
 
-            print('============');
-            print(result);
-            print('============');
-
-            if (result == null) {
-              print('error');
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) => _buildPopupDialog());
-            } else {
-              print('ENTRA');
-              print('${result?.uid}');
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => DrawerMenu()));
-            }
             setState(() => _isLoading = false);
           },
         );
