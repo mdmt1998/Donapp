@@ -56,14 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final _screenSizeWidth = MediaQuery.of(context).size.width;
     final _fontScaling = MediaQuery.of(context).textScaleFactor;
 
-    Widget _titleText() => Container(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Tu perfil',
-            style: TextStyle(fontSize: _fontScaling / 0.038),
-          ),
-        );
-
     Widget _userInformation() => Center(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -175,7 +167,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _titleText(),
                           SizedBox(height: _screenSizeWidth / 10),
                           _userInformation(),
                           SizedBox(height: _screenSizeWidth / 10),

@@ -59,6 +59,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
             verticalScalePercent: 90.0,
             contentCornerRadius: 30.0,
             elevationAppBar: 0.0,
+            styleAutoTittleName:
+                TextStyle(color: Theme.of(context).primaryColor),
             leadingAppBar: Icon(Icons.menu,
                 color: Theme.of(context).secondaryHeaderColor)),
       ),
